@@ -1,0 +1,10 @@
+[package]
+name = "shorelark-coach"
+version = "0.0.0"
+authors = ["Patryk Wychowaniec <pwychowaniec@pm.me>"]
+edition = "2018"
+
+[dependencies]
+num_cpus = "1.13"
+
+lib-simulation = { path = "../../libs/simulation" }

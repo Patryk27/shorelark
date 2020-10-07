@@ -1,0 +1,20 @@
+[package]
+name = "lib-simulation-wasm"
+version = "0.0.0"
+authors = ["Patryk Wychowaniec <pwychowaniec@pm.me>"]
+edition = "2018"
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+nalgebra = "0.23"
+rand = { version = "0.7", features = ["wasm-bindgen"] }
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+wasm-bindgen = { version = "0.2", features = ["serde-serialize"] }
+
+lib-simulation = { path = "../simulation" }
+
+[package.metadata.wasm-pack.profile.release]
+wasm-opt = false

@@ -1,0 +1,13 @@
+[package]
+name = "lib-genetic-algorithm"
+version = "0.0.0"
+authors = ["Patryk Wychowaniec <pwychowaniec@pm.me>"]
+edition = "2018"
+
+[dependencies]
+rand = "0.7"
+rand_chacha = "0.2"
+
+[dev-dependencies]
+approx = "0.4"
+maplit = "1.0"
