@@ -4,6 +4,8 @@ Simulation of life & evolution - powered by neural networks, genetic algorithms,
 
 **Blog post with details coming!**
 
+\... and, in the meantime, you can visit: https://pwychowaniec.com/en/projects/shorelark/
+
 # Building
 
 ```bash
