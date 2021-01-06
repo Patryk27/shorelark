@@ -2,9 +2,7 @@
 
 Simulation of life & evolution - powered by neural networks, genetic algorithms, and high-school math.
 
-**Blog post with details coming!**
-
-\... and, in the meantime, you can visit: https://pwychowaniec.com/en/projects/shorelark/
+I've described the implementation in detail on my blog: [Learning to Fly](https://pwy.io/en/posts/learning-to-fly-pt1).
 
 # Building
 
