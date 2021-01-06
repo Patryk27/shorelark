@@ -21,15 +21,13 @@ impl Neuron {
     pub fn propagate(&self, input: &[f32]) -> f32 {
         assert_eq!(input.len(), self.weights.len());
 
-        let a = 1.0 * self.bias;
-
-        let b = input
+        let output = input
             .iter()
-            .zip(self.weights.iter())
+            .zip(&self.weights)
             .map(|(input, weight)| input * weight)
             .sum::<f32>();
 
-        (a + b).max(0.0)
+        (self.bias + output).max(0.0)
     }
 }
 
