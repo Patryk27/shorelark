@@ -1,5 +1,4 @@
 #![feature(crate_visibility_modifier)]
-#![feature(clamp)]
 
 pub use self::{animal::*, brain::*, config::*, eye::*, food::*, generation_summary::*, world::*};
 
