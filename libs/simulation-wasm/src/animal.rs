@@ -13,7 +13,7 @@ impl From<&sim::Animal> for Animal {
         Self {
             position: Vector::from(animal.position()),
             rotation: animal.rotation().angle(),
-            eye_cells: animal.eye().colors().collect(),
+            eye_cells: animal.eye().energies().to_owned(),
         }
     }
 }

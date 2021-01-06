@@ -66,18 +66,22 @@ mod tests {
             let mut rng = ChaCha8Rng::from_seed(Default::default());
             let layer = Layer::random(3, 2, &mut rng);
 
-            let actual: Vec<_> = layer
+            let actual_biases: Vec<_> = layer.neurons.iter().map(|neuron| neuron.bias).collect();
+            let expected_biases = vec![-0.6255188, 0.5238805];
+
+            let actual_weights: Vec<_> = layer
                 .neurons
                 .iter()
                 .map(|neuron| neuron.weights.as_slice())
                 .collect();
 
-            let expected: Vec<&[f32]> = vec![
-                &[-0.6255188, 0.67383933, 0.81812596],
-                &[0.26284885, 0.5238805, -0.5351684],
+            let expected_weights: Vec<&[f32]> = vec![
+                &[0.67383933, 0.81812596, 0.26284885],
+                &[-0.5351684, 0.069369555, -0.7648182],
             ];
 
-            approx::assert_relative_eq!(actual.as_slice(), expected.as_slice());
+            approx::assert_relative_eq!(actual_biases.as_slice(), expected_biases.as_slice());
+            approx::assert_relative_eq!(actual_weights.as_slice(), expected_weights.as_slice());
         }
     }
 
@@ -87,8 +91,8 @@ mod tests {
         #[test]
         fn returns_propagated_input() {
             let neurons = (
-                Neuron::new(vec![0.1, 0.2, 0.3]),
-                Neuron::new(vec![0.4, 0.5, 0.6]),
+                Neuron::new(0.0, vec![0.1, 0.2, 0.3]),
+                Neuron::new(0.0, vec![0.4, 0.5, 0.6]),
             );
             let input = &[-0.5, 0.0, 0.5];
 
@@ -105,18 +109,25 @@ mod tests {
 
         #[test]
         fn restores_layer_from_given_weights() {
-            let layer =
-                Layer::from_weights(3, 2, &mut vec![0.1, 0.2, 0.3, 0.4, 0.5, 0.6].into_iter());
+            let layer = Layer::from_weights(
+                3,
+                2,
+                &mut vec![0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8].into_iter(),
+            );
 
-            let actual: Vec<_> = layer
+            let actual_biases: Vec<_> = layer.neurons.iter().map(|neuron| neuron.bias).collect();
+            let expected_biases = vec![0.1, 0.5];
+
+            let actual_weights: Vec<_> = layer
                 .neurons
                 .iter()
                 .map(|neuron| neuron.weights.as_slice())
                 .collect();
 
-            let expected: Vec<&[f32]> = vec![&[0.1, 0.2, 0.3], &[0.4, 0.5, 0.6]];
+            let expected_weights: Vec<&[f32]> = vec![&[0.2, 0.3, 0.4], &[0.6, 0.7, 0.8]];
 
-            approx::assert_relative_eq!(actual.as_slice(), expected.as_slice());
+            approx::assert_relative_eq!(actual_biases.as_slice(), expected_biases.as_slice());
+            approx::assert_relative_eq!(actual_weights.as_slice(), expected_weights.as_slice());
         }
     }
 }

@@ -7,11 +7,9 @@ pub struct Eye {
     crate energies: Vec<f32>,
 }
 
-// pub struct EyeConfig { } TODO
-
 impl Eye {
-    pub fn colors(&self) -> impl Iterator<Item = f32> + '_ {
-        self.energies.iter().map(|&energy| (1.0 + energy) / 2.0)
+    pub fn energies(&self) -> &[f32] {
+        &self.energies
     }
 }
 
@@ -68,8 +66,6 @@ impl Eye {
             if max_energy > 0.0 {
                 *energy /= max_energy;
             }
-
-            *energy = -1.0 + 2.0 * *energy;
         }
     }
 }

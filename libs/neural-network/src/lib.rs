@@ -1,11 +1,11 @@
 #![feature(array_methods)]
 #![feature(crate_visibility_modifier)]
-#![feature(clamp)]
 
 pub use self::{layer::*, layer_topology::*, neuron::*};
 
 use rand::Rng;
 use rand_chacha::ChaCha8Rng;
+use std::iter::once;
 
 mod layer;
 mod layer_topology;
@@ -59,8 +59,7 @@ impl Network {
         self.layers
             .iter()
             .flat_map(|layer| layer.neurons.iter())
-            .flat_map(|neuron| neuron.weights.iter())
-            .cloned()
+            .flat_map(|neuron| once(neuron.bias).chain(neuron.weights.iter().cloned()))
     }
 }
 
@@ -88,21 +87,25 @@ mod tests {
             assert_eq!(network.layers.len(), 2);
             assert_eq!(network.layers[0].neurons.len(), 2);
 
+            approx::assert_relative_eq!(network.layers[0].neurons[0].bias, -0.6255188);
+
             approx::assert_relative_eq!(
                 network.layers[0].neurons[0].weights.as_slice(),
-                &[-0.6255188, 0.67383933, 0.81812596].as_slice()
+                &[0.67383933, 0.81812596, 0.26284885].as_slice()
             );
+
+            approx::assert_relative_eq!(network.layers[0].neurons[1].bias, 0.5238805);
 
             approx::assert_relative_eq!(
                 network.layers[0].neurons[1].weights.as_slice(),
-                &[0.26284885, 0.5238805, -0.5351684].as_slice()
+                &[-0.5351684, 0.069369555, -0.7648182].as_slice()
             );
 
             assert_eq!(network.layers[1].neurons.len(), 1);
 
             approx::assert_relative_eq!(
                 network.layers[1].neurons[0].weights.as_slice(),
-                &[0.069369555, -0.7648182].as_slice()
+                &[-0.48879623, -0.19277143].as_slice()
             );
         }
     }
@@ -113,11 +116,11 @@ mod tests {
         #[test]
         fn restores_network_from_given_weights() {
             let layers = &[LayerTopology { size: 3 }, LayerTopology { size: 2 }];
-            let weights = vec![0.1, 0.2, 0.3, 0.4, 0.5, 0.6];
+            let weights = vec![0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8];
             let network = Network::from_weights(layers, weights);
 
             let actual: Vec<_> = network.weights().collect();
-            let expected = vec![0.1, 0.2, 0.3, 0.4, 0.5, 0.6];
+            let expected = vec![0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8];
 
             approx::assert_relative_eq!(actual.as_slice(), expected.as_slice());
         }
@@ -130,10 +133,10 @@ mod tests {
         fn returns_propagated_input() {
             let mut layers = (
                 Layer::new(vec![
-                    Neuron::new(vec![-0.5, -0.4, -0.3]),
-                    Neuron::new(vec![-0.2, -0.1, 0.0]),
+                    Neuron::new(0.0, vec![-0.5, -0.4, -0.3]),
+                    Neuron::new(0.0, vec![-0.2, -0.1, 0.0]),
                 ]),
-                Layer::new(vec![Neuron::new(vec![-0.5, 0.5])]),
+                Layer::new(vec![Neuron::new(0.0, vec![-0.5, 0.5])]),
             );
 
             let mut network = Network::new(vec![layers.0.clone(), layers.1.clone()]);
@@ -150,12 +153,12 @@ mod tests {
         #[test]
         fn returns_weights() {
             let network = Network::new(vec![
-                Layer::new(vec![Neuron::new(vec![0.1, 0.2, 0.3])]),
-                Layer::new(vec![Neuron::new(vec![0.4, 0.5, 0.6])]),
+                Layer::new(vec![Neuron::new(0.1, vec![0.2, 0.3, 0.4])]),
+                Layer::new(vec![Neuron::new(0.5, vec![0.6, 0.7, 0.8])]),
             ]);
 
             let actual: Vec<_> = network.weights().collect();
-            let expected = vec![0.1, 0.2, 0.3, 0.4, 0.5, 0.6];
+            let expected = vec![0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8];
 
             approx::assert_relative_eq!(actual.as_slice(), expected.as_slice());
         }
