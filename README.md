@@ -1,4 +1,4 @@
-# Shorelark
+# 🐦 Shorelark
 
 Simulation of life & evolution - powered by neural networks, genetic algorithms, and high-school math.
 
@@ -12,7 +12,16 @@ $ wasm-pack build --release
 $ cd ../../www
 $ npm install
 $ npm run start
+
+# Now open your browser and navigate to `localhost:8080`
+# (or whatever address npm says it's listening at)
 ```
+
+# Playing
+
+There's an in-game terminal in which you can enter commands - if you just want to see the birds 
+learning, launch the `t` command (as in "train") - i.e. write `t`, press enter, write `t`, press 
+enter etc. for a few times and compare what you see.
 
 # License
 
