@@ -6,7 +6,6 @@ pub struct Statistics {
     crate max_fitness: f32,
     crate avg_fitness: f32,
     crate sum_fitness: f32,
-    crate diversity: f32,
 }
 
 impl Statistics {
@@ -16,7 +15,6 @@ impl Statistics {
         let mut min_fitness = population[0].fitness();
         let mut max_fitness = min_fitness;
         let mut sum_fitness = 0.0;
-        let mut diversity = 0.0;
 
         for individual in population {
             let fitness = individual.fitness();
@@ -26,33 +24,11 @@ impl Statistics {
             sum_fitness += fitness;
         }
 
-        let genomes: Vec<_> = population
-            .iter()
-            .map(|individual| individual.genome())
-            .collect();
-
-        let genome_len = genomes[0].len();
-
-        for gene_idx in 0..genome_len {
-            let mut gene_diversity = 0.0;
-
-            for genome_a in &genomes {
-                for genome_b in &genomes {
-                    gene_diversity += (genome_b[gene_idx] - genome_a[gene_idx]).abs();
-                }
-            }
-
-            diversity += gene_diversity / (genomes.len() as f32);
-        }
-
-        diversity /= genome_len as f32;
-
         Self {
             min_fitness,
             max_fitness,
             avg_fitness: sum_fitness / (population.len() as f32),
             sum_fitness,
-            diversity,
         }
     }
 
@@ -70,10 +46,6 @@ impl Statistics {
 
     pub fn sum_fitness(&self) -> f32 {
         self.sum_fitness
-    }
-
-    pub fn diversity(&self) -> f32 {
-        self.diversity
     }
 }
 
