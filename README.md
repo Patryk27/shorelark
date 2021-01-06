@@ -16,5 +16,5 @@ $ npm run start
 
 # License
 
-Copyright (c) 2020, Patryk Wychowaniec <pwychowaniec@pm.me>.    
+Copyright (c) 2020-2021, Patryk Wychowaniec <pwychowaniec@pm.me>.    
 Licensed under the MIT license.
