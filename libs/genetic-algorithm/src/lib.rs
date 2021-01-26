@@ -3,7 +3,7 @@
 
 pub use self::{crossover::*, genome::*, individual::*, mutation::*, selection::*, statistics::*};
 
-use rand::seq::IteratorRandom;
+use rand::seq::SliceRandom;
 use rand::{Rng, RngCore};
 
 mod crossover;

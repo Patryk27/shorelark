@@ -36,16 +36,9 @@ impl SelectionPolicy for RouletteWheelSelection {
 /// Roulette-wheel selection via stochastic acceptance
 impl Selector for RouletteWheelSelector {
     fn select<'a, I: Individual>(&self, population: &'a [I], rng: &mut dyn RngCore) -> &'a I {
-        loop {
-            let individual = population
-                .iter()
-                .choose(rng)
-                .expect("got an empty population");
-
-            if rng.gen_bool((individual.fitness() / self.max_fitness) as _) {
-                return individual;
-            }
-        }
+        population
+            .choose_weighted(rng, |individual| individual.fitness())
+            .expect("got an empty population")
     }
 }
 
@@ -86,10 +79,10 @@ mod test {
 
         let expected = maplit::btreemap! {
             // individual's fitness => how many times this individual has been chosen
-            1 => 101,
-            2 => 183,
-            3 => 288,
-            4 => 428,
+            1 => 98,
+            2 => 202,
+            3 => 278,
+            4 => 422,
         };
 
         assert_eq!(actual, expected);
