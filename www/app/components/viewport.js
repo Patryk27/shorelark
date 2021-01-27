@@ -47,7 +47,7 @@ export class ViewportComponent {
     }
 
     _renderAnimal({ctxt, size}, {position, rotation, eyeCells}) {
-        const FOV = Math.PI; // TODO
+        const FOV = 1.25 * Math.PI; // TODO hardcoded
 
         const x = position.x * size;
         const y = position.y * size;
@@ -62,15 +62,14 @@ export class ViewportComponent {
         ctxt.fill();
 
         const fovPerCell = FOV / eyeCells.length;
-        const fovStart = -r + eyeCells.length * fovPerCell;
 
         for (let eyeCellId = 0; eyeCellId < eyeCells.length; eyeCellId += 1) {
-            const startAngle = (fovStart + eyeCellId * fovPerCell - fovPerCell / 2.0) % (2.0 * Math.PI);
-            const angleTo = (startAngle + fovPerCell) % (2.0 * Math.PI);
+            const angleFrom = (rotation + eyeCellId * fovPerCell - fovPerCell / 2.0) % (2.0 * Math.PI);
+            const angleTo = (angleFrom + fovPerCell) % (2.0 * Math.PI);
             const energy = eyeCells[eyeCellId];
 
             ctxt.beginPath();
-            ctxt.arc(x, y, 15, startAngle, angleTo);
+            ctxt.arc(x, y, 15, angleFrom, angleTo);
             ctxt.strokeStyle = `rgba(000, 255, 102, ${energy})`;
             ctxt.stroke();
         }
