@@ -49,10 +49,10 @@ impl Network {
         Self::new(layers)
     }
 
-    pub fn propagate<'a>(&'a mut self, input: &'a [f32]) -> &'a [f32] {
+    pub fn propagate(&self, inputs: Vec<f32>) -> Vec<f32> {
         self.layers
-            .iter_mut()
-            .fold(input, |input, layer| layer.propagate(input))
+            .iter()
+            .fold(inputs, |inputs, layer| layer.propagate(inputs))
     }
 
     pub fn weights(&self) -> impl Iterator<Item = f32> + '_ {
@@ -132,19 +132,19 @@ mod tests {
 
         #[test]
         fn test() {
-            let mut layers = (
+            let layers = (
                 Layer::new(vec![
                     Neuron::new(0.0, vec![-0.5, -0.4, -0.3]),
                     Neuron::new(0.0, vec![-0.2, -0.1, 0.0]),
                 ]),
                 Layer::new(vec![Neuron::new(0.0, vec![-0.5, 0.5])]),
             );
+            let network = Network::new(vec![layers.0.clone(), layers.1.clone()]);
 
-            let mut network = Network::new(vec![layers.0.clone(), layers.1.clone()]);
-            let actual = network.propagate(&[0.5, 0.6, 0.7]);
-            let expected = layers.1.propagate(layers.0.propagate(&[0.5, 0.6, 0.7]));
+            let actual = network.propagate(vec![0.5, 0.6, 0.7]);
+            let expected = layers.1.propagate(layers.0.propagate(vec![0.5, 0.6, 0.7]));
 
-            approx::assert_relative_eq!(actual, expected);
+            approx::assert_relative_eq!(actual.as_slice(), expected.as_slice());
         }
     }
 

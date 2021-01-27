@@ -3,7 +3,6 @@ use crate::*;
 #[derive(Clone, Debug)]
 pub struct Layer {
     crate neurons: Vec<Neuron>,
-    crate outputs: Vec<f32>,
 }
 
 impl Layer {
@@ -14,10 +13,7 @@ impl Layer {
             .iter()
             .all(|neuron| neuron.weights.len() == neurons[0].weights.len()));
 
-        Self {
-            outputs: vec![0.0; neurons.len()],
-            neurons,
-        }
+        Self { neurons }
     }
 
     pub fn from_weights(
@@ -40,14 +36,11 @@ impl Layer {
         Self::new(neurons)
     }
 
-    pub fn propagate(&mut self, input: &[f32]) -> &[f32] {
-        let neurons = self.neurons.iter().zip(self.outputs.iter_mut());
-
-        for (neuron, output) in neurons {
-            *output = neuron.propagate(input);
-        }
-
-        &self.outputs
+    pub fn propagate(&self, inputs: Vec<f32>) -> Vec<f32> {
+        self.neurons
+            .iter()
+            .map(|neuron| neuron.propagate(&inputs))
+            .collect()
     }
 }
 
@@ -73,7 +66,6 @@ mod tests {
                 .iter()
                 .map(|neuron| neuron.weights.as_slice())
                 .collect();
-
             let expected_weights: Vec<&[f32]> = vec![
                 &[0.67383933, 0.81812596, 0.26284885],
                 &[-0.5351684, 0.069369555, -0.7648182],
@@ -93,13 +85,14 @@ mod tests {
                 Neuron::new(0.0, vec![0.1, 0.2, 0.3]),
                 Neuron::new(0.0, vec![0.4, 0.5, 0.6]),
             );
-            let input = &[-0.5, 0.0, 0.5];
+            let layer = Layer::new(vec![neurons.0.clone(), neurons.1.clone()]);
 
-            let mut layer = Layer::new(vec![neurons.0.clone(), neurons.1.clone()]);
-            let actual = layer.propagate(input);
-            let expected = vec![neurons.0.propagate(input), neurons.1.propagate(input)];
+            let inputs = &[-0.5, 0.0, 0.5];
 
-            approx::assert_relative_eq!(actual, expected.as_slice());
+            let actual = layer.propagate(inputs.to_vec());
+            let expected = vec![neurons.0.propagate(inputs), neurons.1.propagate(inputs)];
+
+            approx::assert_relative_eq!(actual.as_slice(), expected.as_slice());
         }
     }
 
@@ -122,7 +115,6 @@ mod tests {
                 .iter()
                 .map(|neuron| neuron.weights.as_slice())
                 .collect();
-
             let expected_weights: Vec<&[f32]> = vec![&[0.2, 0.3, 0.4], &[0.6, 0.7, 0.8]];
 
             approx::assert_relative_eq!(actual_biases.as_slice(), expected_biases.as_slice());

@@ -23,8 +23,8 @@ impl Brain {
         ga::Genome::from_iter(self.network.weights())
     }
 
-    crate fn step(&mut self, eye: &Eye) -> (f32, na::Rotation2<f32>) {
-        let response = self.network.propagate(&eye.energies);
+    crate fn step(&self, eye: &Eye) -> (f32, na::Rotation2<f32>) {
+        let response = self.network.propagate(eye.energies.clone());
         let force_left = response[0].clamp(0.0, 1.0);
         let force_right = response[1].clamp(0.0, 1.0);
 

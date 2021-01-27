@@ -33,10 +33,10 @@ impl Neuron {
         Self::new(bias, weights)
     }
 
-    pub fn propagate(&self, input: &[f32]) -> f32 {
-        assert_eq!(input.len(), self.weights.len());
+    pub fn propagate(&self, inputs: &[f32]) -> f32 {
+        assert_eq!(inputs.len(), self.weights.len());
 
-        let output = input
+        let output = inputs
             .iter()
             .zip(&self.weights)
             .map(|(input, weight)| input * weight)
