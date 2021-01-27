@@ -35,7 +35,7 @@ impl SelectionPolicy for RouletteWheelSelection {
 
 /// Roulette-wheel selection via stochastic acceptance
 impl Selector for RouletteWheelSelector {
-    fn select<'a, I: Individual>(&self, population: &'a [I], rng: &mut ChaCha8Rng) -> &'a I {
+    fn select<'a, I: Individual>(&self, population: &'a [I], rng: &mut dyn RngCore) -> &'a I {
         loop {
             let individual = population
                 .iter()
@@ -53,6 +53,7 @@ impl Selector for RouletteWheelSelector {
 mod test {
     use super::*;
     use rand::SeedableRng;
+    use rand_chacha::ChaCha8Rng;
     use std::collections::BTreeMap;
 
     #[test]

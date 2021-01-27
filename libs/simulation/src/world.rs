@@ -17,7 +17,7 @@ impl World {
 }
 
 impl World {
-    crate fn random(config: &Config, rng: &mut ChaCha8Rng) -> Self {
+    crate fn random(config: &Config, rng: &mut dyn RngCore) -> Self {
         let animals = (0..config.animals)
             .map(|_| Animal::random(config, rng))
             .collect();
@@ -27,7 +27,7 @@ impl World {
         Self { animals, foods }
     }
 
-    crate fn reset(&mut self, animals: Vec<Animal>, rng: &mut ChaCha8Rng) {
+    crate fn reset(&mut self, animals: Vec<Animal>, rng: &mut dyn RngCore) {
         for food in &mut self.foods {
             food.reset(rng);
         }

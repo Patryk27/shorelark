@@ -10,7 +10,7 @@ impl UniformCrossover {
 }
 
 impl CrossoverPolicy for UniformCrossover {
-    fn crossover(&self, parent_a: &Genome, parent_b: &Genome, rng: &mut ChaCha8Rng) -> Genome {
+    fn crossover(&self, parent_a: &Genome, parent_b: &Genome, rng: &mut dyn RngCore) -> Genome {
         assert_eq!(parent_a.len(), parent_b.len());
 
         let parent_a = parent_a.iter();
@@ -27,6 +27,7 @@ impl CrossoverPolicy for UniformCrossover {
 mod tests {
     use super::*;
     use rand::SeedableRng;
+    use rand_chacha::ChaCha8Rng;
     use std::iter::FromIterator;
 
     #[test]

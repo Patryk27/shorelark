@@ -11,5 +11,5 @@ pub trait SelectionPolicy {
 }
 
 pub trait Selector {
-    fn select<'a, I: Individual>(&self, population: &'a [I], rng: &mut ChaCha8Rng) -> &'a I;
+    fn select<'a, I: Individual>(&self, population: &'a [I], rng: &mut dyn RngCore) -> &'a I;
 }

@@ -30,7 +30,7 @@ impl Animal {
 }
 
 impl Animal {
-    crate fn random(config: &Config, rng: &mut ChaCha8Rng) -> Self {
+    crate fn random(config: &Config, rng: &mut dyn RngCore) -> Self {
         let brain = Brain::random(config, rng);
         let eye = Eye::new(config);
         let position = na::Vector2::new(rng.gen(), rng.gen());
@@ -48,7 +48,7 @@ impl Animal {
         }
     }
 
-    crate fn from_genome(config: &Config, rng: &mut ChaCha8Rng, genome: ga::Genome) -> Self {
+    crate fn from_genome(config: &Config, rng: &mut dyn RngCore, genome: ga::Genome) -> Self {
         let brain = Brain::from_genome(config, genome);
         let eye = Eye::new(config);
         let position = na::Vector2::new(rng.gen(), rng.gen());

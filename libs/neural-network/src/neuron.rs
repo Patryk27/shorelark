@@ -8,12 +8,27 @@ pub struct Neuron {
 
 impl Neuron {
     pub fn new(bias: f32, weights: Vec<f32>) -> Self {
+        assert!(!weights.is_empty());
+
         Self { bias, weights }
     }
 
-    pub fn random(output_size: usize, rng: &mut ChaCha8Rng) -> Self {
+    pub fn random(output_neurons: usize, rng: &mut dyn RngCore) -> Self {
         let bias = rng.gen_range(-1.0, 1.0);
-        let weights = (0..output_size).map(|_| rng.gen_range(-1.0, 1.0)).collect();
+
+        let weights = (0..output_neurons)
+            .map(|_| rng.gen_range(-1.0, 1.0))
+            .collect();
+
+        Self::new(bias, weights)
+    }
+
+    pub fn from_weights(output_neurons: usize, weights: &mut dyn Iterator<Item = f32>) -> Self {
+        let bias = weights.next().expect("got not enough weights");
+
+        let weights = (0..output_neurons)
+            .map(|_| weights.next().expect("got not enough weights"))
+            .collect();
 
         Self::new(bias, weights)
     }
@@ -31,18 +46,6 @@ impl Neuron {
     }
 }
 
-impl Neuron {
-    crate fn from_weights(output_size: usize, weights: &mut dyn Iterator<Item = f32>) -> Self {
-        let bias = weights.next().expect("got not enough weights");
-
-        let weights = (0..output_size)
-            .map(|_| weights.next().expect("got not enough weights"))
-            .collect();
-
-        Self::new(bias, weights)
-    }
-}
-
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -50,9 +53,10 @@ mod tests {
     mod random {
         use super::*;
         use rand::SeedableRng;
+        use rand_chacha::ChaCha8Rng;
 
         #[test]
-        fn creates_neuron_with_random_bias_and_weights() {
+        fn test() {
             let mut rng = ChaCha8Rng::from_seed(Default::default());
             let neuron = Neuron::random(4, &mut rng);
 
@@ -96,7 +100,7 @@ mod tests {
         use super::*;
 
         #[test]
-        fn restores_neuron_from_given_weights() {
+        fn test() {
             let actual = Neuron::from_weights(3, &mut vec![0.1, 0.2, 0.3, 0.4].into_iter());
             let expected = Neuron::new(0.1, vec![0.2, 0.3, 0.4]);
 

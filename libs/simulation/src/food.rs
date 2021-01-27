@@ -12,13 +12,13 @@ impl Food {
 }
 
 impl Food {
-    crate fn random(rng: &mut ChaCha8Rng) -> Self {
+    crate fn random(rng: &mut dyn RngCore) -> Self {
         Self {
             position: na::Vector2::new(rng.gen(), rng.gen()),
         }
     }
 
-    crate fn reset(&mut self, rng: &mut ChaCha8Rng) {
+    crate fn reset(&mut self, rng: &mut dyn RngCore) {
         self.position = na::Vector2::new(rng.gen(), rng.gen());
     }
 }

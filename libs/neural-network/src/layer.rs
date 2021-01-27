@@ -20,9 +20,21 @@ impl Layer {
         }
     }
 
-    pub fn random(input_size: usize, output_size: usize, rng: &mut ChaCha8Rng) -> Self {
+    pub fn from_weights(
+        input_size: usize,
+        output_size: usize,
+        weights: &mut dyn Iterator<Item = f32>,
+    ) -> Self {
         let neurons = (0..output_size)
-            .map(|_| Neuron::random(input_size, rng))
+            .map(|_| Neuron::from_weights(input_size, weights))
+            .collect();
+
+        Self::new(neurons)
+    }
+
+    pub fn random(input_neurons: usize, output_neurons: usize, rng: &mut dyn RngCore) -> Self {
+        let neurons = (0..output_neurons)
+            .map(|_| Neuron::random(input_neurons, rng))
             .collect();
 
         Self::new(neurons)
@@ -39,20 +51,6 @@ impl Layer {
     }
 }
 
-impl Layer {
-    crate fn from_weights(
-        input_size: usize,
-        output_size: usize,
-        weights: &mut dyn Iterator<Item = f32>,
-    ) -> Self {
-        let neurons = (0..output_size)
-            .map(|_| Neuron::from_weights(input_size, weights))
-            .collect();
-
-        Self::new(neurons)
-    }
-}
-
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -60,9 +58,10 @@ mod tests {
     mod random {
         use super::*;
         use rand::SeedableRng;
+        use rand_chacha::ChaCha8Rng;
 
         #[test]
-        fn creates_layer_with_random_neurons() {
+        fn test() {
             let mut rng = ChaCha8Rng::from_seed(Default::default());
             let layer = Layer::random(3, 2, &mut rng);
 
@@ -89,7 +88,7 @@ mod tests {
         use super::*;
 
         #[test]
-        fn returns_propagated_input() {
+        fn test() {
             let neurons = (
                 Neuron::new(0.0, vec![0.1, 0.2, 0.3]),
                 Neuron::new(0.0, vec![0.4, 0.5, 0.6]),
@@ -108,7 +107,7 @@ mod tests {
         use super::*;
 
         #[test]
-        fn restores_layer_from_given_weights() {
+        fn test() {
             let layer = Layer::from_weights(
                 3,
                 2,

@@ -1,10 +1,10 @@
 #![feature(array_methods)]
 #![feature(crate_visibility_modifier)]
 
-pub use self::{layer::*, layer_topology::*, neuron::*};
+pub use self::layer_topology::*;
 
-use rand::Rng;
-use rand_chacha::ChaCha8Rng;
+use self::{layer::*, neuron::*};
+use rand::{Rng, RngCore};
 use std::iter::once;
 
 mod layer;
@@ -17,16 +17,16 @@ pub struct Network {
 }
 
 impl Network {
-    pub fn new(layers: Vec<Layer>) -> Self {
+    crate fn new(layers: Vec<Layer>) -> Self {
         Self { layers }
     }
 
-    pub fn random(layers: &[LayerTopology], rng: &mut ChaCha8Rng) -> Self {
+    pub fn random(layers: &[LayerTopology], rng: &mut dyn RngCore) -> Self {
         assert!(layers.len() > 1);
 
         let layers = layers
             .windows(2)
-            .map(|layers| Layer::random(layers[0].size, layers[1].size, rng))
+            .map(|layers| Layer::random(layers[0].neurons, layers[1].neurons, rng))
             .collect();
 
         Self::new(layers)
@@ -39,7 +39,7 @@ impl Network {
 
         let layers = layers
             .windows(2)
-            .map(|layers| Layer::from_weights(layers[0].size, layers[1].size, &mut weights))
+            .map(|layers| Layer::from_weights(layers[0].neurons, layers[1].neurons, &mut weights))
             .collect();
 
         if weights.next().is_some() {
@@ -69,17 +69,18 @@ mod tests {
 
     mod random {
         use super::*;
-        use rand_chacha::rand_core::SeedableRng;
+        use rand::SeedableRng;
+        use rand_chacha::ChaCha8Rng;
 
         #[test]
-        fn creates_network_with_random_neurons() {
+        fn test() {
             let mut rng = ChaCha8Rng::from_seed(Default::default());
 
             let network = Network::random(
                 &[
-                    LayerTopology { size: 3 },
-                    LayerTopology { size: 2 },
-                    LayerTopology { size: 1 },
+                    LayerTopology { neurons: 3 },
+                    LayerTopology { neurons: 2 },
+                    LayerTopology { neurons: 1 },
                 ],
                 &mut rng,
             );
@@ -114,8 +115,8 @@ mod tests {
         use super::*;
 
         #[test]
-        fn restores_network_from_given_weights() {
-            let layers = &[LayerTopology { size: 3 }, LayerTopology { size: 2 }];
+        fn test() {
+            let layers = &[LayerTopology { neurons: 3 }, LayerTopology { neurons: 2 }];
             let weights = vec![0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8];
             let network = Network::from_weights(layers, weights);
 
@@ -130,7 +131,7 @@ mod tests {
         use super::*;
 
         #[test]
-        fn returns_propagated_input() {
+        fn test() {
             let mut layers = (
                 Layer::new(vec![
                     Neuron::new(0.0, vec![-0.5, -0.4, -0.3]),
@@ -151,7 +152,7 @@ mod tests {
         use super::*;
 
         #[test]
-        fn returns_weights() {
+        fn test() {
             let network = Network::new(vec![
                 Layer::new(vec![Neuron::new(0.1, vec![0.2, 0.3, 0.4])]),
                 Layer::new(vec![Neuron::new(0.5, vec![0.6, 0.7, 0.8])]),

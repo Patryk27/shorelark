@@ -3,16 +3,15 @@
 
 pub use self::{crossover::*, genome::*, individual::*, mutation::*, selection::*, statistics::*};
 
+use rand::seq::IteratorRandom;
+use rand::{Rng, RngCore};
+
 mod crossover;
 mod genome;
 mod individual;
 mod mutation;
 mod selection;
 mod statistics;
-
-use rand::seq::IteratorRandom;
-use rand::Rng;
-use rand_chacha::ChaCha8Rng;
 
 pub struct Engine<S> {
     crossover_policy: Box<dyn CrossoverPolicy>,
@@ -43,7 +42,7 @@ impl<S: SelectionPolicy> Engine<S> {
     pub fn iterate<I: Individual>(
         &self,
         population: &[I],
-        rng: &mut ChaCha8Rng,
+        rng: &mut dyn RngCore,
     ) -> (Vec<I>, Statistics) {
         assert!(!population.is_empty());
 

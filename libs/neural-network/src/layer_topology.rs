@@ -1,4 +1,4 @@
 #[derive(Clone, Copy, Debug)]
 pub struct LayerTopology {
-    pub size: usize,
+    pub neurons: usize,
 }

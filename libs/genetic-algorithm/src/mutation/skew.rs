@@ -15,7 +15,7 @@ impl SkewMutation {
 }
 
 impl MutationPolicy for SkewMutation {
-    fn mutate(&self, child: &mut Genome, rng: &mut ChaCha8Rng) {
+    fn mutate(&self, child: &mut Genome, rng: &mut dyn RngCore) {
         for gene in child.iter_mut() {
             let sign = if rng.gen_bool(0.5) { -1.0 } else { 1.0 };
 
@@ -30,6 +30,7 @@ impl MutationPolicy for SkewMutation {
 mod tests {
     use super::*;
     use rand::SeedableRng;
+    use rand_chacha::ChaCha8Rng;
     use std::iter::FromIterator;
 
     fn actual(chance: f32, coeff: f32) -> Vec<f32> {

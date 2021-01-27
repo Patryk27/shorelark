@@ -7,7 +7,7 @@ pub struct Brain {
 }
 
 impl Brain {
-    crate fn random(config: &Config, rng: &mut ChaCha8Rng) -> Self {
+    crate fn random(config: &Config, rng: &mut dyn RngCore) -> Self {
         let network = nn::Network::random(&Self::network_topology(config), rng);
 
         Self { network }
@@ -37,12 +37,12 @@ impl Brain {
     fn network_topology(config: &Config) -> [nn::LayerTopology; 3] {
         [
             nn::LayerTopology {
-                size: config.eye_photoreceptors,
+                neurons: config.eye_photoreceptors,
             },
             nn::LayerTopology {
-                size: config.brain_neurons,
+                neurons: config.brain_neurons,
             },
-            nn::LayerTopology { size: 2 },
+            nn::LayerTopology { neurons: 2 },
         ]
     }
 }
