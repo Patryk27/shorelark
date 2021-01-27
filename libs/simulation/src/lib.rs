@@ -2,6 +2,12 @@
 
 pub use self::{animal::*, brain::*, config::*, eye::*, food::*, generation_summary::*, world::*};
 
+use lib_genetic_algorithm as ga;
+use lib_neural_network as nn;
+use nalgebra as na;
+use rand::{Rng, RngCore, SeedableRng};
+use rand_chacha::ChaCha8Rng;
+
 mod animal;
 mod brain;
 mod config;
@@ -9,13 +15,6 @@ mod eye;
 mod food;
 mod generation_summary;
 mod world;
-
-use lib_genetic_algorithm as ga;
-use lib_neural_network as nn;
-use nalgebra as na;
-use rand::prelude::Rng;
-use rand::SeedableRng;
-use rand_chacha::ChaCha8Rng;
 
 #[derive(Clone, Debug)]
 pub struct Engine {

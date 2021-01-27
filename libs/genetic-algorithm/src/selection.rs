@@ -1,8 +1,8 @@
 pub use self::roulette_wheel::*;
 
-mod roulette_wheel;
-
 use crate::*;
+
+mod roulette_wheel;
 
 pub trait SelectionPolicy {
     type Selector: Selector;
