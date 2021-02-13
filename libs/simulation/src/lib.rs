@@ -78,7 +78,7 @@ impl Engine {
         }
 
         if self.step_idx >= self.config.generation_length {
-            let ga = ga::Engine::new(
+            let ga = ga::GeneticAlgorithm::new(
                 ga::UniformCrossover::new(),
                 0.6,
                 ga::SkewMutation::new(0.5, 0.5),

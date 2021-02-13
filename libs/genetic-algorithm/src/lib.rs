@@ -13,7 +13,7 @@ mod mutation;
 mod selection;
 mod statistics;
 
-pub struct Engine<S> {
+pub struct GeneticAlgorithm<S> {
     crossover_policy: Box<dyn CrossoverPolicy>,
     crossover_probability: f32,
     mutation_policy: Box<dyn MutationPolicy>,
@@ -21,7 +21,7 @@ pub struct Engine<S> {
     selection_policy: S,
 }
 
-impl<S: SelectionPolicy> Engine<S> {
+impl<S: SelectionPolicy> GeneticAlgorithm<S> {
     pub fn new(
         crossover_policy: impl CrossoverPolicy + 'static,
         crossover_probability: f32,
