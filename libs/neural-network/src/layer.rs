@@ -59,7 +59,7 @@ mod tests {
             let layer = Layer::random(3, 2, &mut rng);
 
             let actual_biases: Vec<_> = layer.neurons.iter().map(|neuron| neuron.bias).collect();
-            let expected_biases = vec![-0.6255188, 0.5238805];
+            let expected_biases = vec![-0.6255188, 0.5238807];
 
             let actual_weights: Vec<_> = layer
                 .neurons
@@ -67,8 +67,8 @@ mod tests {
                 .map(|neuron| neuron.weights.as_slice())
                 .collect();
             let expected_weights: Vec<&[f32]> = vec![
-                &[0.67383933, 0.81812596, 0.26284885],
-                &[-0.5351684, 0.069369555, -0.7648182],
+                &[0.67383957, 0.8181262, 0.26284897],
+                &[-0.53516835, 0.069369674, -0.7648182],
             ];
 
             approx::assert_relative_eq!(actual_biases.as_slice(), expected_biases.as_slice());

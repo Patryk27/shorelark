@@ -34,7 +34,7 @@ impl Animal {
         let brain = Brain::random(config, rng);
         let eye = Eye::new(config);
         let position = na::Vector2::new(rng.gen(), rng.gen());
-        let rotation = na::Rotation2::new(rng.gen_range(0.0, TAU));
+        let rotation = na::Rotation2::new(rng.gen_range(0.0..=TAU));
         let speed = 0.5;
         let satiation = 0;
 
@@ -52,7 +52,7 @@ impl Animal {
         let brain = Brain::from_genome(config, genome);
         let eye = Eye::new(config);
         let position = na::Vector2::new(rng.gen(), rng.gen());
-        let rotation = na::Rotation2::new(rng.gen_range(0.0, TAU));
+        let rotation = na::Rotation2::new(rng.gen_range(0.0..=TAU));
         let speed = 0.5;
         let satiation = 0;
 

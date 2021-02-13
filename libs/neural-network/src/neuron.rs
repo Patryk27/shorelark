@@ -14,10 +14,10 @@ impl Neuron {
     }
 
     pub fn random(output_neurons: usize, rng: &mut dyn RngCore) -> Self {
-        let bias = rng.gen_range(-1.0, 1.0);
+        let bias = rng.gen_range(-1.0..=1.0);
 
         let weights = (0..output_neurons)
-            .map(|_| rng.gen_range(-1.0, 1.0))
+            .map(|_| rng.gen_range(-1.0..=1.0))
             .collect();
 
         Self::new(bias, weights)
@@ -64,7 +64,7 @@ mod tests {
 
             approx::assert_relative_eq!(
                 neuron.weights.as_slice(),
-                [0.67383933, 0.81812596, 0.26284885, 0.5238805].as_slice(),
+                [0.67383957, 0.8181262, 0.26284897, 0.5238807].as_slice(),
             );
         }
     }
