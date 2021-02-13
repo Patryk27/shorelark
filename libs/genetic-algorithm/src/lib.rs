@@ -47,11 +47,10 @@ impl<S: SelectionPolicy> GeneticAlgorithm<S> {
         assert!(!population.is_empty());
 
         let mut new_population = Vec::with_capacity(population.len());
-        let selector = self.selection_policy.init(&population);
 
         while new_population.len() < population.len() {
-            let mut child_a = selector.select(&population, rng).genome();
-            let mut child_b = selector.select(&population, rng).genome();
+            let mut child_a = self.selection_policy.select(&population, rng).genome();
+            let mut child_b = self.selection_policy.select(&population, rng).genome();
 
             if rng.gen_bool(self.crossover_probability as _) {
                 self.crossover_policy
