@@ -39,7 +39,7 @@ impl<S: SelectionPolicy> GeneticAlgorithm<S> {
     }
 
     // TODO missing tests
-    pub fn iterate<I: Individual>(
+    pub fn evolve<I: Individual>(
         &self,
         population: &[I],
         rng: &mut dyn RngCore,

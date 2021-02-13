@@ -96,7 +96,7 @@ impl Engine {
                 })
                 .collect();
 
-            let (animals, statistics) = ga.iterate(&animals, &mut self.rng);
+            let (animals, statistics) = ga.evolve(&animals, &mut self.rng);
 
             let animals = animals
                 .into_iter()
