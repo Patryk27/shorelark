@@ -1,6 +1,5 @@
 use crate::*;
 
-/// Roulette-wheel selection via stochastic acceptance
 #[derive(Clone, Debug)]
 pub struct RouletteWheelSelection;
 
