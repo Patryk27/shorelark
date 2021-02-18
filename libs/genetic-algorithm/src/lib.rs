@@ -21,7 +21,10 @@ pub struct GeneticAlgorithm<S> {
     selection_policy: S,
 }
 
-impl<S: SelectionPolicy> GeneticAlgorithm<S> {
+impl<S> GeneticAlgorithm<S>
+where
+    S: SelectionPolicy,
+{
     pub fn new(
         crossover_policy: impl CrossoverPolicy + 'static,
         crossover_probability: f32,
@@ -39,11 +42,10 @@ impl<S: SelectionPolicy> GeneticAlgorithm<S> {
     }
 
     // TODO missing tests
-    pub fn evolve<I: Individual>(
-        &self,
-        population: &[I],
-        rng: &mut dyn RngCore,
-    ) -> (Vec<I>, Statistics) {
+    pub fn evolve<I>(&self, population: &[I], rng: &mut dyn RngCore) -> (Vec<I>, Statistics)
+    where
+        I: Individual,
+    {
         assert!(!population.is_empty());
 
         let mut new_population = Vec::with_capacity(population.len());

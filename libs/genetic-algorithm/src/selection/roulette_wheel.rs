@@ -10,7 +10,10 @@ impl RouletteWheelSelection {
 }
 
 impl SelectionPolicy for RouletteWheelSelection {
-    fn select<'a, I: Individual>(&self, population: &'a [I], rng: &mut dyn RngCore) -> &'a I {
+    fn select<'a, I>(&self, population: &'a [I], rng: &mut dyn RngCore) -> &'a I
+    where
+        I: Individual,
+    {
         population
             .choose_weighted(rng, |individual| individual.fitness())
             .expect("got an empty population")

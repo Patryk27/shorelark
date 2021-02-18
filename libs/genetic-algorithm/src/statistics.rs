@@ -9,7 +9,10 @@ pub struct Statistics {
 }
 
 impl Statistics {
-    crate fn new<I: Individual>(population: &[I]) -> Self {
+    crate fn new<I>(population: &[I]) -> Self
+    where
+        I: Individual,
+    {
         assert!(!population.is_empty());
 
         let mut min_fitness = population[0].fitness();
