@@ -37,30 +37,23 @@ mod test {
         ];
 
         let mut rng = ChaCha8Rng::from_seed(Default::default());
+        let policy = RouletteWheelSelection::new();
 
-        let individuals: Vec<_> = (0..1000)
-            .map(|_| RouletteWheelSelection::new().select(&population, &mut rng))
-            .collect();
+        let actual_histogram = (0..1000)
+            .map(|_| policy.select(&population, &mut rng))
+            .fold(BTreeMap::default(), |mut histogram, individual| {
+                *histogram.entry(individual.fitness() as i32).or_default() += 1;
+                histogram
+            });
 
-        let actual: BTreeMap<_, _> = (1..=4)
-            .map(|individual_fitness| {
-                let individual_count = individuals
-                    .iter()
-                    .filter(|individual| individual.fitness() as usize == individual_fitness)
-                    .count();
-
-                (individual_fitness, individual_count)
-            })
-            .collect();
-
-        let expected = maplit::btreemap! {
-            // individual's fitness => how many times this individual has been chosen
+        let expected_histogram = maplit::btreemap! {
+            // fitness => how many times this fitness has been chosen
             1 => 98,
             2 => 202,
             3 => 278,
             4 => 422,
         };
 
-        assert_eq!(actual, expected);
+        assert_eq!(actual_histogram, expected_histogram);
     }
 }
