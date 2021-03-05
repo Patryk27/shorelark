@@ -14,7 +14,7 @@ impl SkewMutation {
     }
 }
 
-impl MutationPolicy for SkewMutation {
+impl MutationMethod for SkewMutation {
     fn mutate(&self, child: &mut Genome, rng: &mut dyn RngCore) {
         for gene in child.iter_mut() {
             let sign = if rng.gen_bool(0.5) { -1.0 } else { 1.0 };

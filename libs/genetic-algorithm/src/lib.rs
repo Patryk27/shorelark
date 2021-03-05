@@ -14,30 +14,30 @@ mod selection;
 mod statistics;
 
 pub struct GeneticAlgorithm<S> {
-    crossover_policy: Box<dyn CrossoverPolicy>,
+    selection_method: S,
+    crossover_method: Box<dyn CrossoverMethod>,
     crossover_probability: f32,
-    mutation_policy: Box<dyn MutationPolicy>,
+    mutation_method: Box<dyn MutationMethod>,
     mutation_probability: f32,
-    selection_policy: S,
 }
 
 impl<S> GeneticAlgorithm<S>
 where
-    S: SelectionPolicy,
+    S: SelectionMethod,
 {
     pub fn new(
-        crossover_policy: impl CrossoverPolicy + 'static,
+        selection_method: S,
+        crossover_method: impl CrossoverMethod + 'static,
         crossover_probability: f32,
-        mutation_policy: impl MutationPolicy + 'static,
+        mutation_method: impl MutationMethod + 'static,
         mutation_probability: f32,
-        selection_policy: S,
     ) -> Self {
         Self {
-            crossover_policy: Box::new(crossover_policy),
+            selection_method,
+            crossover_method: Box::new(crossover_method),
             crossover_probability,
-            mutation_policy: Box::new(mutation_policy),
+            mutation_method: Box::new(mutation_method),
             mutation_probability,
-            selection_policy,
         }
     }
 
@@ -51,17 +51,17 @@ where
         let mut new_population = Vec::with_capacity(population.len());
 
         while new_population.len() < population.len() {
-            let mut child_a = self.selection_policy.select(&population, rng).genome();
-            let mut child_b = self.selection_policy.select(&population, rng).genome();
+            let mut child_a = self.selection_method.select(&population, rng).genome();
+            let mut child_b = self.selection_method.select(&population, rng).genome();
 
             if rng.gen_bool(self.crossover_probability as _) {
-                self.crossover_policy
+                self.crossover_method
                     .crossover(&mut child_a, &mut child_b, rng);
             }
 
             for child in [&mut child_a, &mut child_b].iter_mut() {
                 if rng.gen_bool(self.mutation_probability as _) {
-                    self.mutation_policy.mutate(child, rng);
+                    self.mutation_method.mutate(child, rng);
                 }
             }
 

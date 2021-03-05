@@ -9,7 +9,7 @@ impl UniformCrossover {
     }
 }
 
-impl CrossoverPolicy for UniformCrossover {
+impl CrossoverMethod for UniformCrossover {
     fn crossover(&self, parent_a: &Genome, parent_b: &Genome, rng: &mut dyn RngCore) -> Genome {
         assert_eq!(parent_a.len(), parent_b.len());
 

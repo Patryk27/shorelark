@@ -79,11 +79,11 @@ impl Engine {
 
         if self.step_idx >= self.config.generation_length {
             let ga = ga::GeneticAlgorithm::new(
+                ga::RouletteWheelSelection::new(),
                 ga::UniformCrossover::new(),
                 0.6,
                 ga::SkewMutation::new(0.5, 0.5),
                 0.2,
-                ga::RouletteWheelSelection::new(),
             );
 
             let animals: Vec<_> = self

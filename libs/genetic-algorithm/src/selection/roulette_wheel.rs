@@ -9,7 +9,7 @@ impl RouletteWheelSelection {
     }
 }
 
-impl SelectionPolicy for RouletteWheelSelection {
+impl SelectionMethod for RouletteWheelSelection {
     fn select<'a, I>(&self, population: &'a [I], rng: &mut dyn RngCore) -> &'a I
     where
         I: Individual,
@@ -37,10 +37,10 @@ mod test {
         ];
 
         let mut rng = ChaCha8Rng::from_seed(Default::default());
-        let policy = RouletteWheelSelection::new();
+        let method = RouletteWheelSelection::new();
 
         let actual_histogram = (0..1000)
-            .map(|_| policy.select(&population, &mut rng))
+            .map(|_| method.select(&population, &mut rng))
             .fold(BTreeMap::default(), |mut histogram, individual| {
                 *histogram.entry(individual.fitness() as i32).or_default() += 1;
                 histogram

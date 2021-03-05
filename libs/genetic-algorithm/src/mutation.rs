@@ -4,6 +4,6 @@ use crate::*;
 
 mod skew;
 
-pub trait MutationPolicy {
+pub trait MutationMethod {
     fn mutate(&self, child: &mut Genome, rng: &mut dyn RngCore);
 }
