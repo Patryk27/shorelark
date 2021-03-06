@@ -28,9 +28,9 @@ impl Layer {
         Self::new(neurons)
     }
 
-    pub fn random(input_neurons: usize, output_neurons: usize, rng: &mut dyn RngCore) -> Self {
+    pub fn random(rng: &mut dyn RngCore, input_neurons: usize, output_neurons: usize) -> Self {
         let neurons = (0..output_neurons)
-            .map(|_| Neuron::random(input_neurons, rng))
+            .map(|_| Neuron::random(rng, input_neurons))
             .collect();
 
         Self::new(neurons)
@@ -56,7 +56,7 @@ mod tests {
         #[test]
         fn test() {
             let mut rng = ChaCha8Rng::from_seed(Default::default());
-            let layer = Layer::random(3, 2, &mut rng);
+            let layer = Layer::random(&mut rng, 3, 2);
 
             let actual_biases: Vec<_> = layer.neurons.iter().map(|neuron| neuron.bias).collect();
             let expected_biases = vec![-0.6255188, 0.5238807];

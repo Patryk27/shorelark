@@ -8,7 +8,7 @@ pub struct Brain {
 
 impl Brain {
     crate fn random(config: &Config, rng: &mut dyn RngCore) -> Self {
-        let network = nn::Network::random(&Self::network_topology(config), rng);
+        let network = nn::Network::random(rng, &Self::network_topology(config));
 
         Self { network }
     }

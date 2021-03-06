@@ -96,7 +96,7 @@ impl Engine {
                 })
                 .collect();
 
-            let (animals, statistics) = ga.evolve(&animals, &mut self.rng);
+            let (animals, statistics) = ga.evolve(&mut self.rng, &animals);
 
             let animals = animals
                 .into_iter()
@@ -108,7 +108,7 @@ impl Engine {
                 statistics,
             };
 
-            self.world.reset(animals, &mut self.rng);
+            self.world.reset(&mut self.rng, animals);
             self.step_idx = 0;
             self.generation_idx += 1;
 

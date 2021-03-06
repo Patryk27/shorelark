@@ -10,7 +10,7 @@ impl UniformCrossover {
 }
 
 impl CrossoverMethod for UniformCrossover {
-    fn crossover(&self, parent_a: &Genome, parent_b: &Genome, rng: &mut dyn RngCore) -> Genome {
+    fn crossover(&self, rng: &mut dyn RngCore, parent_a: &Genome, parent_b: &Genome) -> Genome {
         assert_eq!(parent_a.len(), parent_b.len());
 
         let parent_a = parent_a.iter();
@@ -37,7 +37,7 @@ mod tests {
         let mut rng = ChaCha8Rng::from_seed(Default::default());
 
         let actual: Vec<_> = UniformCrossover::new()
-            .crossover(&parent_a, &parent_b, &mut rng)
+            .crossover(&mut rng, &parent_a, &parent_b)
             .into_iter()
             .collect();
 

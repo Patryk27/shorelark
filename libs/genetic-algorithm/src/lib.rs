@@ -42,7 +42,7 @@ where
     }
 
     // TODO missing tests
-    pub fn evolve<I>(&self, population: &[I], rng: &mut dyn RngCore) -> (Vec<I>, Statistics)
+    pub fn evolve<I>(&self, rng: &mut dyn RngCore, population: &[I]) -> (Vec<I>, Statistics)
     where
         I: Individual,
     {
@@ -51,17 +51,17 @@ where
         let mut new_population = Vec::with_capacity(population.len());
 
         while new_population.len() < population.len() {
-            let mut child_a = self.selection_method.select(&population, rng).genome();
-            let mut child_b = self.selection_method.select(&population, rng).genome();
+            let mut child_a = self.selection_method.select(rng, &population).genome();
+            let mut child_b = self.selection_method.select(rng, &population).genome();
 
             if rng.gen_bool(self.crossover_probability as _) {
                 self.crossover_method
-                    .crossover(&mut child_a, &mut child_b, rng);
+                    .crossover(rng, &mut child_a, &mut child_b);
             }
 
             for child in [&mut child_a, &mut child_b].iter_mut() {
                 if rng.gen_bool(self.mutation_probability as _) {
-                    self.mutation_method.mutate(child, rng);
+                    self.mutation_method.mutate(rng, child);
                 }
             }
 

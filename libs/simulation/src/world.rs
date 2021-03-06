@@ -27,7 +27,7 @@ impl World {
         Self { animals, foods }
     }
 
-    crate fn reset(&mut self, animals: Vec<Animal>, rng: &mut dyn RngCore) {
+    crate fn reset(&mut self, rng: &mut dyn RngCore, animals: Vec<Animal>) {
         for food in &mut self.foods {
             food.reset(rng);
         }

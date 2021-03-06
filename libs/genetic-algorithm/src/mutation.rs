@@ -5,5 +5,5 @@ use crate::*;
 mod skew;
 
 pub trait MutationMethod {
-    fn mutate(&self, child: &mut Genome, rng: &mut dyn RngCore);
+    fn mutate(&self, rng: &mut dyn RngCore, child: &mut Genome);
 }

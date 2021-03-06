@@ -21,12 +21,12 @@ impl Network {
         Self { layers }
     }
 
-    pub fn random(layers: &[LayerTopology], rng: &mut dyn RngCore) -> Self {
+    pub fn random(rng: &mut dyn RngCore, layers: &[LayerTopology]) -> Self {
         assert!(layers.len() > 1);
 
         let layers = layers
             .windows(2)
-            .map(|layers| Layer::random(layers[0].neurons, layers[1].neurons, rng))
+            .map(|layers| Layer::random(rng, layers[0].neurons, layers[1].neurons))
             .collect();
 
         Self::new(layers)
@@ -77,12 +77,12 @@ mod tests {
             let mut rng = ChaCha8Rng::from_seed(Default::default());
 
             let network = Network::random(
+                &mut rng,
                 &[
                     LayerTopology { neurons: 3 },
                     LayerTopology { neurons: 2 },
                     LayerTopology { neurons: 1 },
                 ],
-                &mut rng,
             );
 
             assert_eq!(network.layers.len(), 2);

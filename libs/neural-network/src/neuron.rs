@@ -13,7 +13,7 @@ impl Neuron {
         Self { bias, weights }
     }
 
-    pub fn random(output_neurons: usize, rng: &mut dyn RngCore) -> Self {
+    pub fn random(rng: &mut dyn RngCore, output_neurons: usize) -> Self {
         let bias = rng.gen_range(-1.0..=1.0);
 
         let weights = (0..output_neurons)
@@ -58,7 +58,7 @@ mod tests {
         #[test]
         fn test() {
             let mut rng = ChaCha8Rng::from_seed(Default::default());
-            let neuron = Neuron::random(4, &mut rng);
+            let neuron = Neuron::random(&mut rng, 4);
 
             approx::assert_relative_eq!(neuron.bias, -0.6255188);
 

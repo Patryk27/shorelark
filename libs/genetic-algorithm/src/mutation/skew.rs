@@ -15,7 +15,7 @@ impl SkewMutation {
 }
 
 impl MutationMethod for SkewMutation {
-    fn mutate(&self, child: &mut Genome, rng: &mut dyn RngCore) {
+    fn mutate(&self, rng: &mut dyn RngCore, child: &mut Genome) {
         for gene in child.iter_mut() {
             let sign = if rng.gen_bool(0.5) { -1.0 } else { 1.0 };
 
@@ -37,7 +37,7 @@ mod tests {
         let mut child = Genome::from_iter(vec![1.0, 2.0, 3.0, 4.0, 5.0]);
         let mut rng = ChaCha8Rng::from_seed(Default::default());
 
-        SkewMutation::new(chance, coeff).mutate(&mut child, &mut rng);
+        SkewMutation::new(chance, coeff).mutate(&mut rng, &mut child);
 
         child.into_iter().collect()
     }

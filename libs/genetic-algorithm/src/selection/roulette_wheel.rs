@@ -10,7 +10,7 @@ impl RouletteWheelSelection {
 }
 
 impl SelectionMethod for RouletteWheelSelection {
-    fn select<'a, I>(&self, population: &'a [I], rng: &mut dyn RngCore) -> &'a I
+    fn select<'a, I>(&self, rng: &mut dyn RngCore, population: &'a [I]) -> &'a I
     where
         I: Individual,
     {
@@ -40,7 +40,7 @@ mod test {
         let method = RouletteWheelSelection::new();
 
         let actual_histogram = (0..1000)
-            .map(|_| method.select(&population, &mut rng))
+            .map(|_| method.select(&mut rng, &population))
             .fold(BTreeMap::default(), |mut histogram, individual| {
                 *histogram.entry(individual.fitness() as i32).or_default() += 1;
                 histogram
