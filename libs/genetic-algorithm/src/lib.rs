@@ -51,22 +51,24 @@ where
         let mut new_population = Vec::with_capacity(population.len());
 
         while new_population.len() < population.len() {
-            let mut child_a = self.selection_method.select(rng, &population).genome();
-            let mut child_b = self.selection_method.select(rng, &population).genome();
+            let parent_a = self.selection_method.select(rng, &population).genome();
+            let parent_b = self.selection_method.select(rng, &population).genome();
 
-            if rng.gen_bool(self.crossover_probability as _) {
-                self.crossover_method
-                    .crossover(rng, &mut child_a, &mut child_b);
-            }
-
-            for child in [&mut child_a, &mut child_b].iter_mut() {
-                if rng.gen_bool(self.mutation_probability as _) {
-                    self.mutation_method.mutate(rng, child);
+            let mut child = if rng.gen_bool(self.crossover_probability as _) {
+                self.crossover_method.crossover(rng, &parent_a, &parent_b)
+            } else {
+                if rng.gen_bool(0.5) {
+                    parent_a
+                } else {
+                    parent_b
                 }
+            };
+
+            if rng.gen_bool(self.mutation_probability as _) {
+                self.mutation_method.mutate(rng, &mut child);
             }
 
-            new_population.push(I::create(child_a));
-            new_population.push(I::create(child_b));
+            new_population.push(I::create(child));
         }
 
         (new_population, Statistics::new(population))

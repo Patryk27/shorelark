@@ -40,12 +40,12 @@ impl Engine {
     }
 
     pub fn step(&mut self) -> Option<GenerationSummary> {
-        struct GaAnimal {
+        struct Individual {
             genome: ga::Genome,
             fitness: f32,
         }
 
-        impl ga::Individual for GaAnimal {
+        impl ga::Individual for Individual {
             fn create(genome: ga::Genome) -> Self {
                 Self {
                     genome,
@@ -90,7 +90,7 @@ impl Engine {
                 .world
                 .animals
                 .iter()
-                .map(|animal| GaAnimal {
+                .map(|animal| Individual {
                     genome: animal.brain.genome(),
                     fitness: animal.satiation as f32,
                 })

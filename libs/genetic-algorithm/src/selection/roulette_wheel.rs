@@ -29,15 +29,15 @@ mod test {
 
     #[test]
     fn test() {
+        let method = RouletteWheelSelection::new();
+        let mut rng = ChaCha8Rng::from_seed(Default::default());
+
         let population = vec![
             TestIndividual::new(2.0),
             TestIndividual::new(1.0),
             TestIndividual::new(4.0),
             TestIndividual::new(3.0),
         ];
-
-        let mut rng = ChaCha8Rng::from_seed(Default::default());
-        let method = RouletteWheelSelection::new();
 
         let actual_histogram = (0..1000)
             .map(|_| method.select(&mut rng, &population))
