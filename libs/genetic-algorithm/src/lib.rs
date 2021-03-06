@@ -58,9 +58,9 @@ where
                 self.crossover_method.crossover(rng, &parent_a, &parent_b)
             } else {
                 if rng.gen_bool(0.5) {
-                    parent_a
+                    parent_a.to_owned()
                 } else {
-                    parent_b
+                    parent_b.to_owned()
                 }
             };
 

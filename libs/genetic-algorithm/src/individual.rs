@@ -2,7 +2,7 @@ use crate::*;
 
 pub trait Individual {
     fn create(genome: Genome) -> Self;
-    fn genome(&self) -> Genome;
+    fn genome(&self) -> &Genome;
     fn fitness(&self) -> f32;
 }
 
@@ -25,7 +25,7 @@ impl Individual for TestIndividual {
         panic!("not supported for TestIndividual")
     }
 
-    fn genome(&self) -> Genome {
+    fn genome(&self) -> &Genome {
         panic!("not supported for TestIndividual")
     }
 

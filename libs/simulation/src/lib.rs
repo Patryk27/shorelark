@@ -53,8 +53,8 @@ impl Engine {
                 }
             }
 
-            fn genome(&self) -> ga::Genome {
-                self.genome.clone()
+            fn genome(&self) -> &ga::Genome {
+                &self.genome
             }
 
             fn fitness(&self) -> f32 {
