@@ -13,14 +13,14 @@ impl Brain {
         Self { network }
     }
 
-    crate fn from_genome(config: &Config, genome: ga::Genome) -> Self {
-        let network = nn::Network::from_weights(&Self::network_topology(config), genome);
+    crate fn from_chromosome(config: &Config, chromosome: ga::Chromosome) -> Self {
+        let network = nn::Network::from_weights(&Self::network_topology(config), chromosome);
 
         Self { network }
     }
 
-    crate fn genome(&self) -> ga::Genome {
-        ga::Genome::from_iter(self.network.weights())
+    crate fn chromosome(&self) -> ga::Chromosome {
+        ga::Chromosome::from_iter(self.network.weights())
     }
 
     crate fn step(&self, eye: &Eye) -> (f32, na::Rotation2<f32>) {

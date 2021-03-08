@@ -15,7 +15,7 @@ impl SkewMutation {
 }
 
 impl MutationMethod for SkewMutation {
-    fn mutate(&self, rng: &mut dyn RngCore, child: &mut Genome) {
+    fn mutate(&self, rng: &mut dyn RngCore, child: &mut Chromosome) {
         for gene in child.iter_mut() {
             let sign = if rng.gen_bool(0.5) { -1.0 } else { 1.0 };
 
@@ -34,7 +34,7 @@ mod tests {
     use std::iter::FromIterator;
 
     fn actual(chance: f32, coeff: f32) -> Vec<f32> {
-        let mut child = Genome::from_iter(vec![1.0, 2.0, 3.0, 4.0, 5.0]);
+        let mut child = Chromosome::from_iter(vec![1.0, 2.0, 3.0, 4.0, 5.0]);
         let mut rng = ChaCha8Rng::from_seed(Default::default());
 
         SkewMutation::new(chance, coeff).mutate(&mut rng, &mut child);
@@ -51,7 +51,7 @@ mod tests {
             use super::*;
 
             #[test]
-            fn does_not_change_the_original_genome() {
+            fn does_not_change_the_original_chromosome() {
                 let actual = actual(0.0);
                 let expected = vec![1.0, 2.0, 3.0, 4.0, 5.0];
 
@@ -63,7 +63,7 @@ mod tests {
             use super::*;
 
             #[test]
-            fn does_not_change_the_original_genome() {
+            fn does_not_change_the_original_chromosome() {
                 let actual = actual(0.5);
                 let expected = vec![1.0, 2.0, 3.0, 4.0, 5.0];
 
@@ -81,7 +81,7 @@ mod tests {
             use super::*;
 
             #[test]
-            fn does_not_change_the_original_genome() {
+            fn does_not_change_the_original_chromosome() {
                 let actual = actual(0.0);
                 let expected = vec![1.0, 2.0, 3.0, 4.0, 5.0];
 
@@ -93,7 +93,7 @@ mod tests {
             use super::*;
 
             #[test]
-            fn slightly_changes_the_original_genome() {
+            fn slightly_changes_the_original_chromosome() {
                 let actual = actual(0.5);
                 let expected = vec![1.0, 1.7756249, 3.0, 4.1596804, 5.0];
 
@@ -111,7 +111,7 @@ mod tests {
             use super::*;
 
             #[test]
-            fn does_not_change_the_original_genome() {
+            fn does_not_change_the_original_chromosome() {
                 let actual = actual(0.0);
                 let expected = vec![1.0, 2.0, 3.0, 4.0, 5.0];
 
@@ -123,7 +123,7 @@ mod tests {
             use super::*;
 
             #[test]
-            fn entirely_changes_the_original_genome() {
+            fn entirely_changes_the_original_chromosome() {
                 let actual = actual(0.5);
                 let expected = vec![1.4545316, 2.1162078, 2.7756248, 3.9505124, 4.638691];
 

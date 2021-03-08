@@ -41,20 +41,20 @@ impl Engine {
 
     pub fn step(&mut self) -> Option<GenerationSummary> {
         struct Individual {
-            genome: ga::Genome,
+            chromosome: ga::Chromosome,
             fitness: f32,
         }
 
         impl ga::Individual for Individual {
-            fn create(genome: ga::Genome) -> Self {
+            fn create(chromosome: ga::Chromosome) -> Self {
                 Self {
-                    genome,
+                    chromosome,
                     fitness: 0.0,
                 }
             }
 
-            fn genome(&self) -> &ga::Genome {
-                &self.genome
+            fn chromosome(&self) -> &ga::Chromosome {
+                &self.chromosome
             }
 
             fn fitness(&self) -> f32 {
@@ -91,7 +91,7 @@ impl Engine {
                 .animals
                 .iter()
                 .map(|animal| Individual {
-                    genome: animal.brain.genome(),
+                    chromosome: animal.brain.chromosome(),
                     fitness: animal.satiation as f32,
                 })
                 .collect();
@@ -100,7 +100,9 @@ impl Engine {
 
             let animals = animals
                 .into_iter()
-                .map(|animal| Animal::from_genome(&self.config, &mut self.rng, animal.genome))
+                .map(|animal| {
+                    Animal::from_chromosome(&self.config, &mut self.rng, animal.chromosome)
+                })
                 .collect();
 
             let summary = GenerationSummary {

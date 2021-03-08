@@ -1,8 +1,8 @@
 use crate::*;
 
 pub trait Individual {
-    fn create(genome: Genome) -> Self;
-    fn genome(&self) -> &Genome;
+    fn create(chromosome: Chromosome) -> Self;
+    fn chromosome(&self) -> &Chromosome;
     fn fitness(&self) -> f32;
 }
 
@@ -21,11 +21,11 @@ impl TestIndividual {
 
 #[cfg(test)]
 impl Individual for TestIndividual {
-    fn create(_: Genome) -> Self {
+    fn create(_: Chromosome) -> Self {
         panic!("not supported for TestIndividual")
     }
 
-    fn genome(&self) -> &Genome {
+    fn chromosome(&self) -> &Chromosome {
         panic!("not supported for TestIndividual")
     }
 

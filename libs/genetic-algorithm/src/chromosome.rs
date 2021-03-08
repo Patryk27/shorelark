@@ -2,11 +2,11 @@ use std::iter::FromIterator;
 use std::ops::Index;
 
 #[derive(Clone, Debug)]
-pub struct Genome {
+pub struct Chromosome {
     genes: Vec<f32>,
 }
 
-impl Genome {
+impl Chromosome {
     pub fn len(&self) -> usize {
         self.genes.len()
     }
@@ -20,7 +20,7 @@ impl Genome {
     }
 }
 
-impl Index<usize> for Genome {
+impl Index<usize> for Chromosome {
     type Output = f32;
 
     fn index(&self, index: usize) -> &Self::Output {
@@ -28,7 +28,7 @@ impl Index<usize> for Genome {
     }
 }
 
-impl FromIterator<f32> for Genome {
+impl FromIterator<f32> for Chromosome {
     fn from_iter<T: IntoIterator<Item = f32>>(iter: T) -> Self {
         Self {
             genes: iter.into_iter().collect(),
@@ -36,7 +36,7 @@ impl FromIterator<f32> for Genome {
     }
 }
 
-impl IntoIterator for Genome {
+impl IntoIterator for Chromosome {
     type Item = f32;
     type IntoIter = impl Iterator<Item = f32>;
 
@@ -44,5 +44,3 @@ impl IntoIterator for Genome {
         self.genes.into_iter()
     }
 }
-
-// TODO tests

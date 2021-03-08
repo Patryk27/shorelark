@@ -1,13 +1,15 @@
 #![feature(type_alias_impl_trait)]
 #![feature(crate_visibility_modifier)]
 
-pub use self::{crossover::*, genome::*, individual::*, mutation::*, selection::*, statistics::*};
+pub use self::{
+    chromosome::*, crossover::*, individual::*, mutation::*, selection::*, statistics::*,
+};
 
 use rand::seq::SliceRandom;
 use rand::{Rng, RngCore};
 
+mod chromosome;
 mod crossover;
-mod genome;
 mod individual;
 mod mutation;
 mod selection;
@@ -51,8 +53,8 @@ where
         let mut new_population = Vec::with_capacity(population.len());
 
         while new_population.len() < population.len() {
-            let parent_a = self.selection_method.select(rng, &population).genome();
-            let parent_b = self.selection_method.select(rng, &population).genome();
+            let parent_a = self.selection_method.select(rng, &population).chromosome();
+            let parent_b = self.selection_method.select(rng, &population).chromosome();
 
             let mut child = if rng.gen_bool(self.crossover_probability as _) {
                 self.crossover_method.crossover(rng, &parent_a, &parent_b)

@@ -48,8 +48,12 @@ impl Animal {
         }
     }
 
-    crate fn from_genome(config: &Config, rng: &mut dyn RngCore, genome: ga::Genome) -> Self {
-        let brain = Brain::from_genome(config, genome);
+    crate fn from_chromosome(
+        config: &Config,
+        rng: &mut dyn RngCore,
+        chromosome: ga::Chromosome,
+    ) -> Self {
+        let brain = Brain::from_chromosome(config, chromosome);
         let eye = Eye::new(config);
         let position = na::Vector2::new(rng.gen(), rng.gen());
         let rotation = na::Rotation2::new(rng.gen_range(0.0..=TAU));

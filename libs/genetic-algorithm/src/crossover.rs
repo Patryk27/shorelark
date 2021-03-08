@@ -5,5 +5,10 @@ use crate::*;
 mod uniform;
 
 pub trait CrossoverMethod {
-    fn crossover(&self, rng: &mut dyn RngCore, parent_a: &Genome, parent_b: &Genome) -> Genome;
+    fn crossover(
+        &self,
+        rng: &mut dyn RngCore,
+        parent_a: &Chromosome,
+        parent_b: &Chromosome,
+    ) -> Chromosome;
 }
