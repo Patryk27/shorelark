@@ -44,3 +44,54 @@ impl IntoIterator for Chromosome {
         self.genes.into_iter()
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    mod index {
+        use super::*;
+
+        #[test]
+        fn test() {
+            let chromosome = Chromosome {
+                genes: vec![3.0, 1.0, 2.0],
+            };
+
+            assert_eq!(chromosome[0], 3.0);
+            assert_eq!(chromosome[1], 1.0);
+            assert_eq!(chromosome[2], 2.0);
+        }
+    }
+
+    mod from_iterator {
+        use super::*;
+
+        #[test]
+        fn test() {
+            let chromosome: Chromosome = vec![3.0, 1.0, 2.0].into_iter().collect();
+
+            assert_eq!(chromosome[0], 3.0);
+            assert_eq!(chromosome[1], 1.0);
+            assert_eq!(chromosome[2], 2.0);
+        }
+    }
+
+    mod into_iterator {
+        use super::*;
+
+        #[test]
+        fn test() {
+            let chromosome = Chromosome {
+                genes: vec![3.0, 1.0, 2.0],
+            };
+
+            let genes: Vec<_> = chromosome.into_iter().collect();
+
+            assert_eq!(genes.len(), 3);
+            assert_eq!(genes[0], 3.0);
+            assert_eq!(genes[1], 1.0);
+            assert_eq!(genes[2], 2.0);
+        }
+    }
+}
