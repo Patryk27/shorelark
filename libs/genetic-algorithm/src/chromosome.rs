@@ -49,14 +49,62 @@ impl IntoIterator for Chromosome {
 mod tests {
     use super::*;
 
+    fn chromosome() -> Chromosome {
+        Chromosome {
+            genes: vec![3.0, 1.0, 2.0],
+        }
+    }
+
+    mod len {
+        use super::*;
+
+        #[test]
+        fn test() {
+            assert_eq!(chromosome().len(), 3);
+        }
+    }
+
+    mod iter {
+        use super::*;
+
+        #[test]
+        fn test() {
+            let chromosome = chromosome();
+            let genes: Vec<_> = chromosome.iter().collect();
+
+            assert_eq!(genes.len(), 3);
+            assert_eq!(genes[0], &3.0);
+            assert_eq!(genes[1], &1.0);
+            assert_eq!(genes[2], &2.0);
+        }
+    }
+
+    mod iter_mut {
+        use super::*;
+
+        #[test]
+        fn test() {
+            let mut chromosome = chromosome();
+
+            chromosome.iter_mut().for_each(|gene| {
+                *gene *= 10.0;
+            });
+
+            let genes: Vec<_> = chromosome.iter().collect();
+
+            assert_eq!(genes.len(), 3);
+            assert_eq!(genes[0], &30.0);
+            assert_eq!(genes[1], &10.0);
+            assert_eq!(genes[2], &20.0);
+        }
+    }
+
     mod index {
         use super::*;
 
         #[test]
         fn test() {
-            let chromosome = Chromosome {
-                genes: vec![3.0, 1.0, 2.0],
-            };
+            let chromosome = chromosome();
 
             assert_eq!(chromosome[0], 3.0);
             assert_eq!(chromosome[1], 1.0);
@@ -69,7 +117,7 @@ mod tests {
 
         #[test]
         fn test() {
-            let chromosome: Chromosome = vec![3.0, 1.0, 2.0].into_iter().collect();
+            let chromosome: Chromosome = chromosome().into_iter().collect();
 
             assert_eq!(chromosome[0], 3.0);
             assert_eq!(chromosome[1], 1.0);
@@ -82,11 +130,7 @@ mod tests {
 
         #[test]
         fn test() {
-            let chromosome = Chromosome {
-                genes: vec![3.0, 1.0, 2.0],
-            };
-
-            let genes: Vec<_> = chromosome.into_iter().collect();
+            let genes: Vec<_> = chromosome().into_iter().collect();
 
             assert_eq!(genes.len(), 3);
             assert_eq!(genes[0], 3.0);
