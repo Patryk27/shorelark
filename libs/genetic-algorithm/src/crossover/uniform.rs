@@ -1,6 +1,6 @@
 use crate::*;
 
-#[derive(Clone, Copy, Debug)]
+#[derive(Clone, Debug)]
 pub struct UniformCrossover;
 
 impl UniformCrossover {
