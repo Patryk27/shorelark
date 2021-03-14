@@ -18,9 +18,7 @@ mod statistics;
 pub struct GeneticAlgorithm<S> {
     selection_method: S,
     crossover_method: Box<dyn CrossoverMethod>,
-    crossover_probability: f32,
     mutation_method: Box<dyn MutationMethod>,
-    mutation_probability: f32,
 }
 
 impl<S> GeneticAlgorithm<S>
@@ -30,16 +28,12 @@ where
     pub fn new(
         selection_method: S,
         crossover_method: impl CrossoverMethod + 'static,
-        crossover_probability: f32,
         mutation_method: impl MutationMethod + 'static,
-        mutation_probability: f32,
     ) -> Self {
         Self {
             selection_method,
             crossover_method: Box::new(crossover_method),
-            crossover_probability,
             mutation_method: Box::new(mutation_method),
-            mutation_probability,
         }
     }
 
@@ -56,19 +50,9 @@ where
             let parent_a = self.selection_method.select(rng, &population).chromosome();
             let parent_b = self.selection_method.select(rng, &population).chromosome();
 
-            let mut child = if rng.gen_bool(self.crossover_probability as _) {
-                self.crossover_method.crossover(rng, &parent_a, &parent_b)
-            } else {
-                if rng.gen_bool(0.5) {
-                    parent_a.to_owned()
-                } else {
-                    parent_b.to_owned()
-                }
-            };
+            let mut child = self.crossover_method.crossover(rng, &parent_a, &parent_b);
 
-            if rng.gen_bool(self.mutation_probability as _) {
-                self.mutation_method.mutate(rng, &mut child);
-            }
+            self.mutation_method.mutate(rng, &mut child);
 
             new_population.push(I::create(child));
         }

@@ -81,9 +81,7 @@ impl Engine {
             let ga = ga::GeneticAlgorithm::new(
                 ga::RouletteWheelSelection::new(),
                 ga::UniformCrossover::new(),
-                0.6,
-                ga::SkewMutation::new(0.5, 0.5),
-                0.2,
+                ga::SkewMutation::new(0.01, 0.3),
             );
 
             let animals: Vec<_> = self
