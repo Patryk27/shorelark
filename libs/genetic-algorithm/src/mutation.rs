@@ -1,8 +1,8 @@
-pub use self::skew::*;
+pub use self::gaussian::*;
 
 use crate::*;
 
-mod skew;
+mod gaussian;
 
 pub trait MutationMethod {
     fn mutate(&self, rng: &mut dyn RngCore, child: &mut Chromosome);

@@ -1,12 +1,12 @@
 use crate::*;
 
 #[derive(Clone, Debug)]
-pub struct SkewMutation {
+pub struct GaussianMutation {
     chance: f32,
     coeff: f32,
 }
 
-impl SkewMutation {
+impl GaussianMutation {
     pub fn new(chance: f32, coeff: f32) -> Self {
         assert!(chance >= 0.0 && chance <= 1.0);
 
@@ -14,7 +14,7 @@ impl SkewMutation {
     }
 }
 
-impl MutationMethod for SkewMutation {
+impl MutationMethod for GaussianMutation {
     fn mutate(&self, rng: &mut dyn RngCore, child: &mut Chromosome) {
         for gene in child.iter_mut() {
             let sign = if rng.gen_bool(0.5) { -1.0 } else { 1.0 };
@@ -37,7 +37,7 @@ mod tests {
         let mut child = Chromosome::from_iter(vec![1.0, 2.0, 3.0, 4.0, 5.0]);
         let mut rng = ChaCha8Rng::from_seed(Default::default());
 
-        SkewMutation::new(chance, coeff).mutate(&mut rng, &mut child);
+        GaussianMutation::new(chance, coeff).mutate(&mut rng, &mut child);
 
         child.into_iter().collect()
     }
