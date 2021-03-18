@@ -44,18 +44,18 @@ where
     {
         assert!(!population.is_empty());
 
-        let mut new_population = Vec::with_capacity(population.len());
+        let new_population = (0..population.len())
+            .map(|_| {
+                let parent_a = self.selection_method.select(rng, population).chromosome();
+                let parent_b = self.selection_method.select(rng, population).chromosome();
 
-        while new_population.len() < population.len() {
-            let parent_a = self.selection_method.select(rng, &population).chromosome();
-            let parent_b = self.selection_method.select(rng, &population).chromosome();
+                let mut child = self.crossover_method.crossover(rng, parent_a, parent_b);
 
-            let mut child = self.crossover_method.crossover(rng, &parent_a, &parent_b);
+                self.mutation_method.mutate(rng, &mut child);
 
-            self.mutation_method.mutate(rng, &mut child);
-
-            new_population.push(I::create(child));
-        }
+                I::create(child)
+            })
+            .collect();
 
         (new_population, Statistics::new(population))
     }
