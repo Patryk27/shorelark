@@ -66,7 +66,7 @@ impl Engine {
 
         for animal in &mut self.world.animals {
             for food in &mut self.world.foods {
-                if (&food.position - &animal.position).norm() < self.config.food_size {
+                if (food.position - animal.position).norm() < self.config.food_size {
                     animal.satiation += 1;
                     food.reset(&mut self.rng);
                 }

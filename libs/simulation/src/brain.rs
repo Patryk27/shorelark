@@ -1,5 +1,4 @@
 use crate::*;
-use std::iter::FromIterator;
 
 #[derive(Clone, Debug)]
 pub struct Brain {
@@ -20,7 +19,7 @@ impl Brain {
     }
 
     crate fn chromosome(&self) -> ga::Chromosome {
-        ga::Chromosome::from_iter(self.network.weights())
+        self.network.weights().collect()
     }
 
     crate fn step(&self, eye: &Eye) -> (f32, na::Rotation2<f32>) {

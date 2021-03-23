@@ -25,7 +25,7 @@ impl Animal {
     }
 
     pub fn direction(&self) -> na::Vector2<f32> {
-        &self.rotation * &na::Vector2::new(0.0, 0.005 * self.speed)
+        self.rotation * na::Vector2::new(0.0, 0.005 * self.speed)
     }
 }
 
