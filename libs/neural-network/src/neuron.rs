@@ -75,9 +75,9 @@ mod tests {
         #[test]
         fn returns_propagated_input() {
             let actual = Neuron::new(0.1, vec![-0.3, 0.6, 0.9]).propagate(&[0.5, -0.6, 0.7]);
-            let expected = 0.1 + (0.5 * -0.3) + (-0.6 * 0.6) + (0.7 * 0.9);
+            let expected: f32 = 0.1 + (0.5 * -0.3) + (-0.6 * 0.6) + (0.7 * 0.9);
 
-            approx::assert_relative_eq!(actual, expected);
+            approx::assert_relative_eq!(actual, expected.max(0.0));
         }
 
         #[test]
