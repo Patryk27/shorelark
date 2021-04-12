@@ -15,11 +15,11 @@ const viewport = new ViewportComponent(document.getElementById("viewport"));
 let config = new sim.Config();
 
 /**
- * Current simulation's engine.
+ * Current simulation.
  *
- * @type {Engine}
+ * @type {Simulation}
  */
-let engine = new sim.Engine(config);
+let simulation = new sim.Simulation(config);
 
 /**
  * Whether the simulation is working or not.
@@ -157,20 +157,20 @@ function execReset(cmd) {
     }
 
     config = newConfig;
-    engine = new sim.Engine(config);
+    simulation = new sim.Simulation(config);
     active = true;
 }
 
 function execTrain() {
-    const stats = engine.train();
+    const stats = simulation.train();
     stdout.println(stats);
     active = true;
 }
 
 function loop() {
     if (active) {
-        const stats = engine.step();
-        const world = engine.world();
+        const stats = simulation.step();
+        const world = simulation.world();
 
         if (stats.length > 0) {
             stdout.println(stats);

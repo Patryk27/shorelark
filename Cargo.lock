@@ -90,7 +90,6 @@ dependencies = [
  "lib-neural-network",
  "nalgebra",
  "rand",
- "rand_chacha",
 ]
 
 [[package]]
@@ -101,6 +100,7 @@ dependencies = [
  "lib-simulation",
  "nalgebra",
  "rand",
+ "rand_chacha",
  "serde",
  "serde_json",
  "wasm-bindgen",

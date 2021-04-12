@@ -11,6 +11,7 @@ pub struct Config {
 
 #[wasm_bindgen]
 impl Config {
+    #[allow(clippy::new_without_default)] // `impl Default` wouldn't get exported via `wasm_bindgen`
     #[wasm_bindgen(constructor)]
     pub fn new() -> Self {
         let default = sim::Config::default();
@@ -64,13 +65,13 @@ impl Config {
     }
 }
 
-impl Into<sim::Config> for &Config {
-    fn into(self) -> sim::Config {
-        sim::Config {
-            animals: self.animals,
-            brain_neurons: self.neurons,
-            eye_photoreceptors: self.photoreceptors,
-            foods: self.foods,
+impl From<&Config> for sim::Config {
+    fn from(config: &Config) -> Self {
+        Self {
+            animals: config.animals,
+            brain_neurons: config.neurons,
+            eye_photoreceptors: config.photoreceptors,
+            foods: config.foods,
             ..Default::default()
         }
     }

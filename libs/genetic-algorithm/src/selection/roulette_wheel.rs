@@ -1,13 +1,7 @@
 use crate::*;
 
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct RouletteWheelSelection;
-
-impl RouletteWheelSelection {
-    pub fn new() -> Self {
-        Self
-    }
-}
 
 impl SelectionMethod for RouletteWheelSelection {
     fn select<'a, I>(&self, rng: &mut dyn RngCore, population: &'a [I]) -> &'a I
@@ -29,7 +23,7 @@ mod test {
 
     #[test]
     fn test() {
-        let method = RouletteWheelSelection::new();
+        let method = RouletteWheelSelection::default();
         let mut rng = ChaCha8Rng::from_seed(Default::default());
 
         let population = vec![

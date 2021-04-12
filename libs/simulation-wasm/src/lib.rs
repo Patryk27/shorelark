@@ -2,6 +2,8 @@ pub use self::{animal::*, config::*, food::*, vector::*, world::*};
 
 use lib_simulation as sim;
 use nalgebra as na;
+use rand::SeedableRng;
+use rand_chacha::ChaCha8Rng;
 use serde::Serialize;
 use wasm_bindgen::prelude::*;
 
@@ -12,31 +14,34 @@ mod vector;
 mod world;
 
 #[wasm_bindgen]
-pub struct Engine {
-    engine: sim::Engine,
+pub struct Simulation {
+    rng: ChaCha8Rng,
+    sim: sim::Simulation,
 }
 
 #[wasm_bindgen]
-impl Engine {
+impl Simulation {
     #[wasm_bindgen(constructor)]
     pub fn new(config: &Config) -> Self {
-        let engine = sim::Engine::new(config.into());
-        Self { engine }
+        let mut rng = ChaCha8Rng::from_entropy();
+        let sim = sim::Simulation::new(config.into(), &mut rng);
+
+        Self { rng, sim }
     }
 
     pub fn step(&mut self) -> String {
-        self.engine
-            .step()
+        self.sim
+            .step(&mut self.rng)
             .map(|stats| stats.to_string())
             .unwrap_or_default()
     }
 
     pub fn train(&mut self) -> String {
-        self.engine.train().to_string()
+        self.sim.train(&mut self.rng).to_string()
     }
 
     pub fn world(&self) -> JsValue {
-        let world = World::from(self.engine.world());
+        let world = World::from(self.sim.world());
         JsValue::from_serde(&world).unwrap()
     }
 }

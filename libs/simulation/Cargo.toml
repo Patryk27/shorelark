@@ -10,7 +10,6 @@ crate-type = ["cdylib", "rlib"]
 [dependencies]
 nalgebra = "0.26"
 rand = "0.8"
-rand_chacha = "0.3"
 
 lib-genetic-algorithm = { path = "../genetic-algorithm" }
 lib-neural-network = { path = "../neural-network" }

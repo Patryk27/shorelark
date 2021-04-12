@@ -2,13 +2,14 @@
 
 pub use self::{animal::*, brain::*, config::*, eye::*, food::*, generation_summary::*, world::*};
 
+use self::animal_indvidual::*;
 use lib_genetic_algorithm as ga;
 use lib_neural_network as nn;
 use nalgebra as na;
-use rand::{Rng, RngCore, SeedableRng};
-use rand_chacha::ChaCha8Rng;
+use rand::{Rng, RngCore};
 
 mod animal;
+mod animal_indvidual;
 mod brain;
 mod config;
 mod eye;
@@ -16,59 +17,62 @@ mod food;
 mod generation_summary;
 mod world;
 
-#[derive(Clone, Debug)]
-pub struct Engine {
-    crate rng: ChaCha8Rng,
+pub struct Simulation {
     crate config: Config,
+    crate ga: ga::GeneticAlgorithm<ga::RouletteWheelSelection>,
     crate world: World,
     crate step_idx: usize,
     crate generation_idx: usize,
 }
 
-impl Engine {
-    pub fn new(config: Config) -> Self {
-        let mut rng = ChaCha8Rng::from_entropy();
-        let world = World::random(&config, &mut rng);
+impl Simulation {
+    pub fn new(config: Config, rng: &mut dyn RngCore) -> Self {
+        let ga = ga::GeneticAlgorithm::new(
+            ga::RouletteWheelSelection::default(),
+            ga::UniformCrossover::default(),
+            ga::GaussianMutation::new(0.01, 0.3),
+        );
+
+        let world = World::random(&config, rng);
 
         Self {
-            rng,
             config,
+            ga,
             world,
             step_idx: 0,
             generation_idx: 0,
         }
     }
 
-    pub fn step(&mut self) -> Option<GenerationSummary> {
-        struct Individual {
-            chromosome: ga::Chromosome,
-            fitness: f32,
-        }
-
-        impl ga::Individual for Individual {
-            fn create(chromosome: ga::Chromosome) -> Self {
-                Self {
-                    chromosome,
-                    fitness: 0.0,
-                }
-            }
-
-            fn chromosome(&self) -> &ga::Chromosome {
-                &self.chromosome
-            }
-
-            fn fitness(&self) -> f32 {
-                self.fitness
-            }
-        }
-
+    pub fn step(&mut self, rng: &mut dyn RngCore) -> Option<GenerationSummary> {
         self.step_idx += 1;
+        self.step_process(rng);
 
+        if self.step_idx >= self.config.generation_length {
+            Some(self.step_evolve(rng))
+        } else {
+            None
+        }
+    }
+
+    pub fn train(&mut self, rng: &mut dyn RngCore) -> GenerationSummary {
+        loop {
+            if let Some(stats) = self.step(rng) {
+                break stats;
+            }
+        }
+    }
+
+    pub fn world(&self) -> &World {
+        &self.world
+    }
+
+    fn step_process(&mut self, rng: &mut dyn RngCore) {
         for animal in &mut self.world.animals {
             for food in &mut self.world.foods {
                 if (food.position - animal.position).norm() < self.config.food_size {
                     animal.satiation += 1;
-                    food.reset(&mut self.rng);
+                    food.reset(rng);
                 }
             }
         }
@@ -76,69 +80,32 @@ impl Engine {
         for animal in &mut self.world.animals {
             animal.step(&self.config, &self.world.foods);
         }
-
-        if self.step_idx >= self.config.generation_length {
-            let ga = ga::GeneticAlgorithm::new(
-                ga::RouletteWheelSelection::new(),
-                ga::UniformCrossover::new(),
-                ga::GaussianMutation::new(0.01, 0.3),
-            );
-
-            let animals: Vec<_> = self
-                .world
-                .animals
-                .iter()
-                .map(|animal| Individual {
-                    chromosome: animal.brain.chromosome(),
-                    fitness: animal.satiation as f32,
-                })
-                .collect();
-
-            let (animals, statistics) = ga.evolve(&mut self.rng, &animals);
-
-            let animals = animals
-                .into_iter()
-                .map(|animal| {
-                    Animal::from_chromosome(&self.config, &mut self.rng, animal.chromosome)
-                })
-                .collect();
-
-            let summary = GenerationSummary {
-                generation_idx: self.generation_idx,
-                statistics,
-            };
-
-            self.world.reset(&mut self.rng, animals);
-            self.step_idx = 0;
-            self.generation_idx += 1;
-
-            Some(summary)
-        } else {
-            None
-        }
     }
 
-    pub fn train(&mut self) -> GenerationSummary {
-        loop {
-            if let Some(stats) = self.step() {
-                break stats;
-            }
-        }
-    }
+    fn step_evolve(&mut self, rng: &mut dyn RngCore) -> GenerationSummary {
+        let individuals: Vec<_> = self
+            .world
+            .animals
+            .iter()
+            .map(AnimalIndividual::new)
+            .collect();
 
-    pub fn config(&self) -> &Config {
-        &self.config
-    }
+        let (individuals, statistics) = self.ga.evolve(rng, &individuals);
 
-    pub fn world(&self) -> &World {
-        &self.world
-    }
+        let animals = individuals
+            .into_iter()
+            .map(|individual| Animal::from_chromosome(&self.config, rng, individual.chromosome))
+            .collect();
 
-    pub fn step_idx(&self) -> usize {
-        self.step_idx
-    }
+        let summary = GenerationSummary {
+            generation_idx: self.generation_idx,
+            statistics,
+        };
 
-    pub fn generation_idx(&self) -> usize {
-        self.generation_idx
+        self.world.reset(rng, animals);
+        self.step_idx = 0;
+        self.generation_idx += 1;
+
+        summary
     }
 }

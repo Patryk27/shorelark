@@ -72,13 +72,14 @@ mod tests {
         TestIndividual::create(chromosome)
     }
 
+    #[allow(clippy::excessive_precision)] // formatting the numbers differently would make the test less readable
     #[test]
     fn test() {
         let mut rng = ChaCha8Rng::from_seed(Default::default());
 
         let ga = GeneticAlgorithm::new(
-            RouletteWheelSelection::new(),
-            UniformCrossover::new(),
+            RouletteWheelSelection::default(),
+            UniformCrossover::default(),
             GaussianMutation::new(0.5, 0.5),
         );
 

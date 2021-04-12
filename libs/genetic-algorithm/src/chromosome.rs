@@ -6,6 +6,7 @@ pub struct Chromosome {
     genes: Vec<f32>,
 }
 
+#[allow(clippy::len_without_is_empty)] // chromosomes are not supposed to be empty, so it doesn't make much sense to have such function
 impl Chromosome {
     pub fn len(&self) -> usize {
         self.genes.len()
@@ -52,6 +53,7 @@ impl PartialEq for Chromosome {
     }
 }
 
+#[allow(clippy::float_cmp)] // it's safe, because we're comparing hard-coded floats only
 #[cfg(test)]
 mod tests {
     use super::*;
