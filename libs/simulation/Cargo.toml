@@ -8,7 +8,7 @@ edition = "2018"
 crate-type = ["cdylib", "rlib"]
 
 [dependencies]
-nalgebra = "0.24"
+nalgebra = "0.26"
 rand = "0.8"
 rand_chacha = "0.3"
 
