@@ -1,4 +1,4 @@
-pub use self::{animal::*, config::*, food::*, vector::*, world::*};
+pub use self::{animal::*, config::*, food::*, point::*, world::*};
 
 use lib_simulation as sim;
 use nalgebra as na;
@@ -10,7 +10,7 @@ use wasm_bindgen::prelude::*;
 mod animal;
 mod config;
 mod food;
-mod vector;
+mod point;
 mod world;
 
 #[wasm_bindgen]

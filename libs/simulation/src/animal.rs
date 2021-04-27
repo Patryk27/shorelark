@@ -5,7 +5,7 @@ use std::f32::consts::{FRAC_PI_4, TAU};
 pub struct Animal {
     crate brain: Brain,
     crate eye: Eye,
-    crate position: na::Vector2<f32>,
+    crate position: na::Point2<f32>,
     crate rotation: na::Rotation2<f32>,
     crate speed: f32,
     crate satiation: usize,
@@ -16,7 +16,7 @@ impl Animal {
         &self.eye
     }
 
-    pub fn position(&self) -> na::Vector2<f32> {
+    pub fn position(&self) -> na::Point2<f32> {
         self.position
     }
 
@@ -33,7 +33,7 @@ impl Animal {
     crate fn random(config: &Config, rng: &mut dyn RngCore) -> Self {
         let brain = Brain::random(config, rng);
         let eye = Eye::new(config);
-        let position = na::Vector2::new(rng.gen(), rng.gen());
+        let position = na::Point2::new(rng.gen(), rng.gen());
         let rotation = na::Rotation2::new(rng.gen_range(0.0..=TAU));
         let speed = 0.5;
         let satiation = 0;
@@ -55,7 +55,7 @@ impl Animal {
     ) -> Self {
         let brain = Brain::from_chromosome(config, chromosome);
         let eye = Eye::new(config);
-        let position = na::Vector2::new(rng.gen(), rng.gen());
+        let position = na::Point2::new(rng.gen(), rng.gen());
         let rotation = na::Rotation2::new(rng.gen_range(0.0..=TAU));
         let speed = 0.5;
         let satiation = 0;
