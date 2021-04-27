@@ -109,3 +109,27 @@ impl Simulation {
         summary
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use rand::SeedableRng;
+    use rand_chacha::ChaCha8Rng;
+
+    #[test]
+    #[ignore]
+    fn smoke_test() {
+        let mut rng = ChaCha8Rng::from_seed(Default::default());
+        let mut sim = Simulation::new(Default::default(), &mut rng);
+
+        let mut avg_fitness = 0.0;
+
+        for _ in 0..10 {
+            avg_fitness += sim.train(&mut rng).statistics.avg_fitness();
+        }
+
+        avg_fitness /= 10.0;
+
+        assert!((25.0..30.0).contains(&avg_fitness));
+    }
+}

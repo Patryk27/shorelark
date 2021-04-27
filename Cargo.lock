@@ -90,6 +90,7 @@ dependencies = [
  "lib-neural-network",
  "nalgebra",
  "rand",
+ "rand_chacha",
 ]
 
 [[package]]
