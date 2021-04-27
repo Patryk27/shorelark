@@ -4,9 +4,6 @@ version = "0.0.0"
 authors = ["Patryk Wychowaniec <pwychowaniec@pm.me>"]
 edition = "2018"
 
-[lib]
-crate-type = ["cdylib", "rlib"]
-
 [dependencies]
 nalgebra = "0.26"
 rand = "0.8"
