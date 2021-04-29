@@ -3,7 +3,7 @@ use std::fmt;
 
 #[derive(Clone, Debug)]
 pub struct GenerationSummary {
-    pub generation_idx: usize,
+    pub generation: usize,
     pub statistics: ga::Statistics,
 }
 
@@ -12,7 +12,7 @@ impl fmt::Display for GenerationSummary {
         write!(
             f,
             "generation #{}:\navg[{:.1}] max[{:.1}] min[{:.1}] sum[{:.1}]",
-            self.generation_idx,
+            self.generation,
             self.statistics.avg_fitness(),
             self.statistics.max_fitness(),
             self.statistics.min_fitness(),

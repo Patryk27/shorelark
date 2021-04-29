@@ -1,5 +1,10 @@
 use crate::*;
-use std::f32::consts::{FRAC_PI_4, TAU};
+use std::f32::consts::FRAC_PI_4;
+
+const SPEED_MIN: f32 = 0.001;
+const SPEED_MAX: f32 = 0.005;
+const SPEED_FACTOR: f32 = 0.002;
+const ROTATION_FACTOR: f32 = FRAC_PI_4;
 
 #[derive(Clone, Debug)]
 pub struct Animal {
@@ -23,29 +28,14 @@ impl Animal {
     pub fn rotation(&self) -> na::Rotation2<f32> {
         self.rotation
     }
-
-    pub fn direction(&self) -> na::Vector2<f32> {
-        self.rotation * na::Vector2::new(0.0, 0.005 * self.speed)
-    }
 }
 
 impl Animal {
     crate fn random(config: &Config, rng: &mut dyn RngCore) -> Self {
         let brain = Brain::random(config, rng);
         let eye = Eye::new(config);
-        let position = na::Point2::new(rng.gen(), rng.gen());
-        let rotation = na::Rotation2::new(rng.gen_range(0.0..=TAU));
-        let speed = 0.5;
-        let satiation = 0;
 
-        Self {
-            brain,
-            eye,
-            position,
-            rotation,
-            speed,
-            satiation,
-        }
+        Self::new(rng, brain, eye)
     }
 
     crate fn from_chromosome(
@@ -55,38 +45,34 @@ impl Animal {
     ) -> Self {
         let brain = Brain::from_chromosome(config, chromosome);
         let eye = Eye::new(config);
-        let position = na::Point2::new(rng.gen(), rng.gen());
-        let rotation = na::Rotation2::new(rng.gen_range(0.0..=TAU));
-        let speed = 0.5;
-        let satiation = 0;
 
-        Self {
-            brain,
-            eye,
-            position,
-            rotation,
-            speed,
-            satiation,
-        }
+        Self::new(rng, brain, eye)
     }
 
     crate fn step(&mut self, config: &Config, foods: &[Food]) {
         self.eye.step(config, foods, self.position, self.rotation);
+        let (speed_delta, rotation_delta) = self.brain.step(&self.eye);
 
-        let (speed, rotation) = self.brain.step(&self.eye);
+        self.speed = (self.speed + speed_delta * SPEED_FACTOR).clamp(SPEED_MIN, SPEED_MAX);
 
-        self.speed += {
-            let delta = (speed - self.speed).clamp(-0.5, 0.5);
-            delta * 0.33
-        };
+        self.rotation =
+            na::Rotation2::new(self.rotation.angle() + rotation_delta * ROTATION_FACTOR);
 
-        self.rotation = {
-            let delta = rotation.angle().clamp(-FRAC_PI_4, FRAC_PI_4);
-            na::Rotation2::new(self.rotation.angle() + delta)
-        };
-
-        self.position += self.direction();
+        self.position += self.rotation * na::Vector2::new(0.0, self.speed);
         self.position.x = na::wrap(self.position.x, 0.0, 1.0);
         self.position.y = na::wrap(self.position.y, 0.0, 1.0);
+    }
+}
+
+impl Animal {
+    fn new(rng: &mut dyn RngCore, brain: Brain, eye: Eye) -> Self {
+        Self {
+            brain,
+            eye,
+            position: rng.gen(),
+            rotation: rng.gen(),
+            speed: SPEED_MAX / 2.0,
+            satiation: 0,
+        }
     }
 }

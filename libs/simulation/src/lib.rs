@@ -2,14 +2,14 @@
 
 pub use self::{animal::*, brain::*, config::*, eye::*, food::*, generation_summary::*, world::*};
 
-use self::animal_indvidual::*;
+use self::animal_individual::*;
 use lib_genetic_algorithm as ga;
 use lib_neural_network as nn;
 use nalgebra as na;
 use rand::{Rng, RngCore};
 
 mod animal;
-mod animal_indvidual;
+mod animal_individual;
 mod brain;
 mod config;
 mod eye;
@@ -18,11 +18,11 @@ mod generation_summary;
 mod world;
 
 pub struct Simulation {
-    crate config: Config,
-    crate ga: ga::GeneticAlgorithm<ga::RouletteWheelSelection>,
-    crate world: World,
-    crate step_idx: usize,
-    crate generation_idx: usize,
+    config: Config,
+    ga: ga::GeneticAlgorithm<ga::RouletteWheelSelection>,
+    world: World,
+    step: usize,
+    generation: usize,
 }
 
 impl Simulation {
@@ -39,16 +39,16 @@ impl Simulation {
             config,
             ga,
             world,
-            step_idx: 0,
-            generation_idx: 0,
+            step: 0,
+            generation: 0,
         }
     }
 
     pub fn step(&mut self, rng: &mut dyn RngCore) -> Option<GenerationSummary> {
-        self.step_idx += 1;
+        self.step += 1;
         self.step_process(rng);
 
-        if self.step_idx >= self.config.generation_length {
+        if self.step >= self.config.generation_length {
             Some(self.step_evolve(rng))
         } else {
             None
@@ -70,7 +70,7 @@ impl Simulation {
     fn step_process(&mut self, rng: &mut dyn RngCore) {
         for animal in &mut self.world.animals {
             for food in &mut self.world.foods {
-                if (food.position - animal.position).norm() < self.config.food_size {
+                if (food.position - animal.position).norm() < 0.01 {
                     animal.satiation += 1;
                     food.reset(rng);
                 }
@@ -98,13 +98,13 @@ impl Simulation {
             .collect();
 
         let summary = GenerationSummary {
-            generation_idx: self.generation_idx,
+            generation: self.generation,
             statistics,
         };
 
         self.world.reset(rng, animals);
-        self.step_idx = 0;
-        self.generation_idx += 1;
+        self.step = 0;
+        self.generation += 1;
 
         summary
     }
@@ -122,14 +122,11 @@ mod tests {
         let mut rng = ChaCha8Rng::from_seed(Default::default());
         let mut sim = Simulation::new(Default::default(), &mut rng);
 
-        let mut avg_fitness = 0.0;
+        let avg_fitness = (0..10)
+            .map(|_| sim.train(&mut rng).statistics.avg_fitness())
+            .sum::<f32>()
+            / 10.0;
 
-        for _ in 0..10 {
-            avg_fitness += sim.train(&mut rng).statistics.avg_fitness();
-        }
-
-        avg_fitness /= 10.0;
-
-        assert!((25.0..30.0).contains(&avg_fitness));
+        assert!((29.0..31.0).contains(&avg_fitness));
     }
 }
