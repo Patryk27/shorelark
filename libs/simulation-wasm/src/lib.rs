@@ -2,8 +2,7 @@ pub use self::{animal::*, config::*, food::*, point::*, world::*};
 
 use lib_simulation as sim;
 use nalgebra as na;
-use rand::SeedableRng;
-use rand_chacha::ChaCha8Rng;
+use rand::prelude::*;
 use serde::Serialize;
 use wasm_bindgen::prelude::*;
 
@@ -15,7 +14,7 @@ mod world;
 
 #[wasm_bindgen]
 pub struct Simulation {
-    rng: ChaCha8Rng,
+    rng: ThreadRng,
     sim: sim::Simulation,
 }
 
@@ -23,7 +22,7 @@ pub struct Simulation {
 impl Simulation {
     #[wasm_bindgen(constructor)]
     pub fn new(config: &Config) -> Self {
-        let mut rng = ChaCha8Rng::from_entropy();
+        let mut rng = thread_rng();
         let sim = sim::Simulation::new(config.into(), &mut rng);
 
         Self { rng, sim }

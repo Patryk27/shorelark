@@ -101,7 +101,6 @@ dependencies = [
  "lib-simulation",
  "nalgebra",
  "rand",
- "rand_chacha",
  "serde",
  "serde_json",
  "wasm-bindgen",
