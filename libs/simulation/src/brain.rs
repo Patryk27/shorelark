@@ -1,44 +1,54 @@
 use crate::*;
 
-#[derive(Clone, Debug)]
+#[derive(Debug)]
 pub struct Brain {
-    network: nn::Network,
+    speed_accel: f32,
+    rotation_accel: f32,
+    nn: nn::Network,
 }
 
 impl Brain {
     crate fn random(config: &Config, rng: &mut dyn RngCore) -> Self {
-        Self {
-            network: nn::Network::random(rng, &Self::network_topology(config)),
-        }
+        let nn = nn::Network::random(rng, &Self::topology(config));
+
+        Self::new(config, nn)
     }
 
     crate fn from_chromosome(config: &Config, chromosome: ga::Chromosome) -> Self {
-        Self {
-            network: nn::Network::from_weights(&Self::network_topology(config), chromosome),
-        }
+        let nn = nn::Network::from_weights(&Self::topology(config), chromosome);
+
+        Self::new(config, nn)
     }
 
-    crate fn chromosome(&self) -> ga::Chromosome {
-        self.network.weights().collect()
+    crate fn as_chromosome(&self) -> ga::Chromosome {
+        self.nn.weights().collect()
     }
 
-    crate fn step(&self, eye: &Eye) -> (f32, f32) {
-        let response = self.network.propagate(eye.energies.to_vec());
-        let force_left = response[0].clamp(0.0, 1.0) - 0.5;
-        let force_right = response[1].clamp(0.0, 1.0) - 0.5;
+    crate fn propagate(&self, vision: Vec<f32>) -> (f32, f32) {
+        let response = self.nn.propagate(vision);
 
-        let speed_delta = force_left + force_right;
-        let rotation_delta = force_left - force_right;
+        let r0 = response[0].clamp(0.0, 1.0) - 0.5;
+        let r1 = response[1].clamp(0.0, 1.0) - 0.5;
+        let speed = (r0 + r1).clamp(-self.speed_accel, self.speed_accel);
+        let rotation = (r0 - r1).clamp(-self.rotation_accel, self.rotation_accel);
 
-        (speed_delta, rotation_delta)
+        (speed, rotation)
     }
 }
 
 impl Brain {
-    fn network_topology(config: &Config) -> [nn::LayerTopology; 3] {
+    fn new(config: &Config, nn: nn::Network) -> Self {
+        Self {
+            speed_accel: config.sim_speed_accel,
+            rotation_accel: config.sim_rotation_accel,
+            nn,
+        }
+    }
+
+    fn topology(config: &Config) -> [nn::LayerTopology; 3] {
         [
             nn::LayerTopology {
-                neurons: config.eye_photoreceptors,
+                neurons: config.eye_cells,
             },
             nn::LayerTopology {
                 neurons: config.brain_neurons,

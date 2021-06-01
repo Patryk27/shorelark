@@ -1,3 +1,3 @@
-import("./app.js").catch(err => {
-    console.error("Error importing `app.js`:", err)
+import("./index.js").catch(err => {
+    console.error("Error importing `index.js`:", err)
 });

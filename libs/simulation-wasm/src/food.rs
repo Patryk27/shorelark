@@ -1,14 +1,16 @@
 use crate::*;
 
-#[derive(Clone, Copy, Debug, Serialize)]
+#[derive(Clone, Debug, Serialize)]
 pub struct Food {
-    pub position: Point2,
+    pub x: f32,
+    pub y: f32,
 }
 
 impl From<&sim::Food> for Food {
     fn from(food: &sim::Food) -> Self {
         Self {
-            position: Point2::from(food.position()),
+            x: food.position().x,
+            y: food.position().y,
         }
     }
 }

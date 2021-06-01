@@ -1,19 +1,20 @@
 use crate::*;
 
 #[derive(Clone, Debug, Serialize)]
-#[serde(rename_all = "camelCase")]
 pub struct Animal {
-    pub position: Point2,
+    pub x: f32,
+    pub y: f32,
     pub rotation: f32,
-    pub eye_cells: Vec<f32>,
+    pub vision: Vec<f32>,
 }
 
 impl From<&sim::Animal> for Animal {
     fn from(animal: &sim::Animal) -> Self {
         Self {
-            position: Point2::from(animal.position()),
+            x: animal.position().x,
+            y: animal.position().y,
             rotation: animal.rotation().angle(),
-            eye_cells: animal.eye().energies().to_owned(),
+            vision: animal.vision().to_owned(),
         }
     }
 }

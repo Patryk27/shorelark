@@ -7,10 +7,12 @@ edition = "2018"
 [dependencies]
 nalgebra = { version = "0.26", features = ["rand-no-std"] }
 rand = "0.8"
+serde = { version = "1.0", features = ["derive"] }
 
 lib-genetic-algorithm = { path = "../genetic-algorithm" }
 lib-neural-network = { path = "../neural-network" }
 
 [dev-dependencies]
-rand = "0.8"
+approx = "0.4"
 rand_chacha = "0.3"
+test-case = "1.1"

@@ -1,24 +1,28 @@
 use crate::*;
 
 pub struct AnimalIndividual {
-    pub chromosome: ga::Chromosome,
-    pub fitness: f32,
+    crate fitness: f32,
+    crate chromosome: ga::Chromosome,
 }
 
 impl AnimalIndividual {
-    pub fn new(animal: &Animal) -> Self {
+    pub fn from_animal(animal: &Animal) -> Self {
         Self {
-            chromosome: animal.brain.chromosome(),
             fitness: animal.satiation as f32,
+            chromosome: animal.as_chromosome(),
         }
+    }
+
+    pub fn into_animal(self, config: &Config, rng: &mut dyn RngCore) -> Animal {
+        Animal::from_chromosome(config, rng, self.chromosome)
     }
 }
 
 impl ga::Individual for AnimalIndividual {
     fn create(chromosome: ga::Chromosome) -> Self {
         Self {
-            chromosome,
             fitness: 0.0,
+            chromosome,
         }
     }
 

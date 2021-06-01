@@ -5,16 +5,12 @@ authors = ["Patryk Wychowaniec <pwychowaniec@pm.me>"]
 edition = "2018"
 
 [lib]
-crate-type = ["cdylib", "rlib"]
+crate-type = ["cdylib"]
 
 [dependencies]
-nalgebra = "0.26"
-rand = "0.8"
-serde = { version = "1.0", features = ["derive"] }
-serde_json = "1.0"
-wasm-bindgen = { version = "0.2", features = ["serde-serialize"] }
-
-lib-simulation = { path = "../simulation" }
-
-[target.wasm32-unknown-unknown.dependencies]
 getrandom = { version = "0.2", features = ["js"] }
+rand = "0.8"
+serde = { version = "1.0", features = ["derive"]  }
+wasm-bindgen = { version = "0.2", features = ["serde-serialize"]  }
+
+lib-simulation = { path = "../simulation"  }

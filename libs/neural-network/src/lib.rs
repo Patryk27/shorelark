@@ -59,7 +59,8 @@ impl Network {
         self.layers
             .iter()
             .flat_map(|layer| layer.neurons.iter())
-            .flat_map(|neuron| once(neuron.bias).chain(neuron.weights.iter().cloned()))
+            .flat_map(|neuron| once(&neuron.bias).chain(&neuron.weights))
+            .cloned()
     }
 }
 
@@ -118,12 +119,12 @@ mod tests {
         fn test() {
             let layers = &[LayerTopology { neurons: 3 }, LayerTopology { neurons: 2 }];
             let weights = vec![0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8];
-            let network = Network::from_weights(layers, weights);
 
-            let actual: Vec<_> = network.weights().collect();
-            let expected = vec![0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8];
+            let actual: Vec<_> = Network::from_weights(layers, weights.clone())
+                .weights()
+                .collect();
 
-            approx::assert_relative_eq!(actual.as_slice(), expected.as_slice());
+            approx::assert_relative_eq!(actual.as_slice(), weights.as_slice());
         }
     }
 
