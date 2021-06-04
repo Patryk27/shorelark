@@ -1,5 +1,5 @@
-.idea
 dist
 node_modules
 pkg
+result
 target
