@@ -76,9 +76,9 @@ $ npm run start
 
 # Usage
 
-Shorelark contains a simple in-game introduction - just read what the terminal on the left side says, and have fun!
+Shorelark contains a simple in-game introduction - just read what the terminal on the left side says and have fun!
 
 # License
 
-Copyright (c) 2020-2021, Patryk Wychowaniec <pwychowaniec@pm.me>.    
+Copyright (c) 2020-2022, Patryk Wychowaniec <pwychowaniec@pm.me>.    
 Licensed under the MIT license.
