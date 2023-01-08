@@ -268,7 +268,12 @@ function redraw() {
         const anglePerCell = config.eye_fov_angle / config.eye_cells;
 
         for (let cellId = 0; cellId < config.eye_cells; cellId += 1) {
-            const angleFrom = (animal.rotation - config.eye_fov_angle / 2.0) + (cellId * anglePerCell);
+            const angleFrom =
+                  animal.rotation
+                  - config.eye_fov_angle / 2.0
+                  + cellId * anglePerCell
+                  + Math.PI / 2.0;
+
             const angleTo = angleFrom + anglePerCell;
             const energy = animal.vision[cellId];
 

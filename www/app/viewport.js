@@ -53,23 +53,23 @@ export class Viewport {
         this.ctxt.beginPath();
 
         this.ctxt.moveTo(
-            x + Math.cos(rotation) * size * 1.5,
-            y + Math.sin(rotation) * size * 1.5,
+            x - Math.sin(rotation) * size * 1.5,
+            y + Math.cos(rotation) * size * 1.5,
         );
 
         this.ctxt.lineTo(
-            x + Math.cos(rotation + 2.0 / 3.0 * Math.PI) * size,
-            y + Math.sin(rotation + 2.0 / 3.0 * Math.PI) * size,
+            x - Math.sin(rotation + 2.0 / 3.0 * Math.PI) * size,
+            y + Math.cos(rotation + 2.0 / 3.0 * Math.PI) * size,
         );
 
         this.ctxt.lineTo(
-            x + Math.cos(rotation - 2.0 / 3.0 * Math.PI) * size,
-            y + Math.sin(rotation - 2.0 / 3.0 * Math.PI) * size,
+            x - Math.sin(rotation - 2.0 / 3.0 * Math.PI) * size,
+            y + Math.cos(rotation - 2.0 / 3.0 * Math.PI) * size,
         );
 
         this.ctxt.lineTo(
-            x + Math.cos(rotation) * size * 1.5,
-            y + Math.sin(rotation) * size * 1.5,
+            x - Math.sin(rotation) * size * 1.5,
+            y + Math.cos(rotation) * size * 1.5,
         );
 
         this.ctxt.fillStyle = style;
