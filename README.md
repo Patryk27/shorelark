@@ -80,5 +80,5 @@ Shorelark contains a simple in-game introduction - just read what the terminal o
 
 # License
 
-Copyright (c) 2020-2022, Patryk Wychowaniec <pwychowaniec@pm.me>.    
+Copyright (c) 2020-2023, Patryk Wychowaniec <pwychowaniec@pm.me>.    
 Licensed under the MIT license.
