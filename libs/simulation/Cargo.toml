@@ -5,7 +5,7 @@ authors = ["Patryk Wychowaniec <pwychowaniec@pm.me>"]
 edition = "2018"
 
 [dependencies]
-nalgebra = { version = "0.26", features = ["rand-no-std"] }
+nalgebra = { version = "0.32", features = ["rand-no-std"] }
 rand = "0.8"
 serde = { version = "1.0", features = ["derive"] }
 

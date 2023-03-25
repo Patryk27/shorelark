@@ -19,7 +19,7 @@ pub struct Simulation {
 impl Simulation {
     #[wasm_bindgen(constructor)]
     pub fn new(config: JsValue) -> Self {
-        let config: sim::Config = config.into_serde().unwrap();
+        let config: sim::Config = serde_wasm_bindgen::from_value(config).unwrap();
 
         let mut rng = thread_rng();
         let sim = sim::Simulation::random(config, &mut rng);
@@ -28,16 +28,17 @@ impl Simulation {
     }
 
     pub fn default_config() -> JsValue {
-        JsValue::from_serde(&sim::Config::default()).unwrap()
+        serde_wasm_bindgen::to_value(&sim::Config::default()).unwrap()
     }
 
     pub fn config(&self) -> JsValue {
-        JsValue::from_serde(self.sim.config()).unwrap()
+        serde_wasm_bindgen::to_value(self.sim.config()).unwrap()
     }
 
     pub fn world(&self) -> JsValue {
         let world = World::from(self.sim.world());
-        JsValue::from_serde(&world).unwrap()
+
+        serde_wasm_bindgen::to_value(&world).unwrap()
     }
 
     pub fn step(&mut self) -> Option<String> {

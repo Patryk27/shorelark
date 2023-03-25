@@ -2,8 +2,8 @@ use crate::*;
 
 #[derive(Debug)]
 pub struct World {
-    crate animals: Vec<Animal>,
-    crate foods: Vec<Food>,
+    pub(crate) animals: Vec<Animal>,
+    pub(crate) foods: Vec<Food>,
 }
 
 impl World {
@@ -17,7 +17,7 @@ impl World {
 }
 
 impl World {
-    crate fn random(config: &Config, rng: &mut dyn RngCore) -> Self {
+    pub(crate) fn random(config: &Config, rng: &mut dyn RngCore) -> Self {
         let animals = (0..config.world_animals)
             .map(|_| Animal::random(config, rng))
             .collect();

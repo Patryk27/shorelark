@@ -2,7 +2,7 @@ use crate::*;
 
 #[derive(Clone, Debug)]
 pub struct Layer {
-    crate neurons: Vec<Neuron>,
+    pub(crate) neurons: Vec<Neuron>,
 }
 
 impl Layer {

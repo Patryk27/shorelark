@@ -1,8 +1,8 @@
 use crate::*;
 
 pub struct AnimalIndividual {
-    crate fitness: f32,
-    crate chromosome: ga::Chromosome,
+    pub(crate) fitness: f32,
+    pub(crate) chromosome: ga::Chromosome,
 }
 
 impl AnimalIndividual {

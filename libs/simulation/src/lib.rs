@@ -1,5 +1,3 @@
-#![feature(crate_visibility_modifier)]
-
 pub use self::{animal::*, brain::*, config::*, eye::*, food::*, statistics::*, world::*};
 
 mod animal;

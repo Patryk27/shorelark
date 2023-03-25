@@ -1,10 +1,12 @@
 # 🐦 Shorelark
 
-Simulation of evolution, powered by neural networks, genetic algorithms & high-school math:
+Simulation of evolution, powered by neural networks, genetic algorithms &
+high-school math:
 
 ![screenshot](./readme/screenshot.png)
 
-Feeling curious? I've described the implementation _ab ovo_ on my blog: [Learning to Fly](https://pwy.io/en/posts/learning-to-fly-pt1).
+Feeling curious? I've described the implementation _ab ovo_ on my blog:
+[Learning to Fly](https://pwy.io/en/posts/learning-to-fly-pt1).
 
 # Building
 
@@ -12,7 +14,7 @@ Feeling curious? I've described the implementation _ab ovo_ on my blog: [Learnin
 
 ```bash
 # 1/3: Clone the repository
-$ git clone https://github.com/patryk27/shorelark
+$ git clone https://github.com/Patryk27/shorelark
 $ cd shorelark
 
 # 2/3: Build the application
@@ -54,9 +56,11 @@ $ nix shell nixpkgs#php80 -c php -S localhost:8080 -t result
 
 ## Using Cargo and npm
 
+Requires `cargo`, `npm` and `wasm-pack` (0.11.0):
+
 ```bash
 # 1/3: Clone the repository
-$ git clone https://github.com/patryk27/shorelark
+$ git clone https://github.com/Patryk27/shorelark
 $ cd shorelark
 
 # 2/3: Compile Rust into WebAssembly
@@ -76,7 +80,8 @@ $ npm run start
 
 # Usage
 
-Shorelark contains a simple in-game introduction - just read what the terminal on the left side says and have fun!
+Shorelark contains a simple in-game introduction - just read what the terminal
+on the left side says and have fun!
 
 # License
 

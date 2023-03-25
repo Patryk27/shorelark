@@ -3,11 +3,11 @@
 
   inputs = {
     naersk = {
-      url = "github:nmattia/naersk";
+      url = "github:nix-community/naersk";
     };
 
     napalm = {
-      url = "github:nmattia/napalm";
+      url = "github:nix-community/napalm";
     };
 
     nixpkgs = {
@@ -30,7 +30,7 @@
           inherit system;
 
           overlays = [
-            rust-overlay.overlay
+            rust-overlay.overlays.default
           ];
         };
 

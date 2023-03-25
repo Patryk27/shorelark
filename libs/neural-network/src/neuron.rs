@@ -2,8 +2,8 @@ use crate::*;
 
 #[derive(Clone, Debug)]
 pub struct Neuron {
-    crate bias: f32,
-    crate weights: Vec<f32>,
+    pub(crate) bias: f32,
+    pub(crate) weights: Vec<f32>,
 }
 
 impl Neuron {

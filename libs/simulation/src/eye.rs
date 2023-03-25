@@ -2,17 +2,17 @@ use crate::*;
 
 #[derive(Debug)]
 pub struct Eye {
-    crate fov_range: f32,
-    crate fov_angle: f32,
-    crate cells: usize,
+    pub(crate) fov_range: f32,
+    pub(crate) fov_angle: f32,
+    pub(crate) cells: usize,
 }
 
 impl Eye {
-    crate fn new(config: &Config) -> Self {
+    pub(crate) fn new(config: &Config) -> Self {
         Self::new_ex(config.eye_fov_range, config.eye_fov_angle, config.eye_cells)
     }
 
-    crate fn process_vision(
+    pub(crate) fn process_vision(
         &self,
         position: na::Point2<f32>,
         rotation: na::Rotation2<f32>,

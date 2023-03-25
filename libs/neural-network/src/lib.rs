@@ -1,5 +1,4 @@
 #![feature(array_methods)]
-#![feature(crate_visibility_modifier)]
 
 pub use self::layer_topology::*;
 
@@ -17,7 +16,7 @@ pub struct Network {
 }
 
 impl Network {
-    crate fn new(layers: Vec<Layer>) -> Self {
+    pub(crate) fn new(layers: Vec<Layer>) -> Self {
         Self { layers }
     }
 

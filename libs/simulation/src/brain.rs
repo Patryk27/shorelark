@@ -8,23 +8,23 @@ pub struct Brain {
 }
 
 impl Brain {
-    crate fn random(config: &Config, rng: &mut dyn RngCore) -> Self {
+    pub(crate) fn random(config: &Config, rng: &mut dyn RngCore) -> Self {
         let nn = nn::Network::random(rng, &Self::topology(config));
 
         Self::new(config, nn)
     }
 
-    crate fn from_chromosome(config: &Config, chromosome: ga::Chromosome) -> Self {
+    pub(crate) fn from_chromosome(config: &Config, chromosome: ga::Chromosome) -> Self {
         let nn = nn::Network::from_weights(&Self::topology(config), chromosome);
 
         Self::new(config, nn)
     }
 
-    crate fn as_chromosome(&self) -> ga::Chromosome {
+    pub(crate) fn as_chromosome(&self) -> ga::Chromosome {
         self.nn.weights().collect()
     }
 
-    crate fn propagate(&self, vision: Vec<f32>) -> (f32, f32) {
+    pub(crate) fn propagate(&self, vision: Vec<f32>) -> (f32, f32) {
         let response = self.nn.propagate(vision);
 
         let r0 = response[0].clamp(0.0, 1.0) - 0.5;
