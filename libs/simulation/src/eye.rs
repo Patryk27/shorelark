@@ -28,7 +28,7 @@ impl Eye {
                 continue;
             }
 
-            let angle = na::Rotation2::rotation_between(&na::Vector2::x(), &vec).angle();
+            let angle = na::Rotation2::rotation_between(&na::Vector2::y(), &vec).angle();
             let angle = angle - rotation.angle();
             let angle = na::wrap(angle, -PI, PI);
 
@@ -129,7 +129,7 @@ mod tests {
         #[test_case(0.1, "             ")]
         fn test(fov_range: f32, expected: &'static str) {
             TestCase {
-                foods: vec![food(1.0, 0.5)],
+                foods: vec![food(0.5, 1.0)],
                 fov_angle: FRAC_PI_2,
                 x: 0.5,
                 y: 0.5,
@@ -157,12 +157,12 @@ mod tests {
             TestCase {
                 foods: vec![
                     food(0.0, 0.0),
-                    food(0.0, 0.33),
-                    food(0.0, 0.66),
-                    food(0.0, 1.0),
+                    food(0.33, 0.0),
+                    food(0.66, 0.0),
                     food(1.0, 0.0),
-                    food(1.0, 0.33),
-                    food(1.0, 0.66),
+                    food(0.0, 1.0),
+                    food(0.33, 1.0),
+                    food(0.66, 1.0),
                     food(1.0, 1.0),
                 ],
                 fov_range: 1.0,
@@ -208,7 +208,7 @@ mod tests {
                 foods: vec![food(1.0, 0.4), food(1.0, 0.6)],
                 fov_range: 1.0,
                 fov_angle: FRAC_PI_2,
-                rot: 0.0,
+                rot: 3.0 * FRAC_PI_2,
                 x,
                 y,
                 expected,
@@ -234,7 +234,7 @@ mod tests {
         #[test_case(2.50 * PI, "      +      ")]
         fn test(rot: f32, expected: &'static str) {
             TestCase {
-                foods: vec![food(0.5, 1.0)],
+                foods: vec![food(0.0, 0.5)],
                 fov_range: 1.0,
                 fov_angle: 2.0 * PI,
                 x: 0.5,
