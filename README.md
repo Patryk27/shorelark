@@ -32,7 +32,7 @@ $ nix build
 # $ nix-build
 
 # 3/3: Start the frontend application
-$ nix shell nixpkgs#php80 -c php -S localhost:8080 -t result
+$ nix shell nixpkgs#php -c php -S localhost:8080 -t result
 #
 # ^ After launching this, open `http://localhost:8080` in
 #   your web browser - you should see the simulation working
