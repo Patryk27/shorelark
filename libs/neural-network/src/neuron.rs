@@ -13,20 +13,17 @@ impl Neuron {
         Self { bias, weights }
     }
 
-    pub fn random(rng: &mut dyn RngCore, output_neurons: usize) -> Self {
+    pub fn random(rng: &mut dyn RngCore, input_size: usize) -> Self {
         let bias = rng.gen_range(-1.0..=1.0);
-
-        let weights = (0..output_neurons)
-            .map(|_| rng.gen_range(-1.0..=1.0))
-            .collect();
+        let weights = (0..input_size).map(|_| rng.gen_range(-1.0..=1.0)).collect();
 
         Self::new(bias, weights)
     }
 
-    pub fn from_weights(output_neurons: usize, weights: &mut dyn Iterator<Item = f32>) -> Self {
+    pub fn from_weights(input_size: usize, weights: &mut dyn Iterator<Item = f32>) -> Self {
         let bias = weights.next().expect("got not enough weights");
 
-        let weights = (0..output_neurons)
+        let weights = (0..input_size)
             .map(|_| weights.next().expect("got not enough weights"))
             .collect();
 
