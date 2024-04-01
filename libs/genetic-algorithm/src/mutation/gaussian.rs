@@ -38,7 +38,7 @@ mod tests {
 
         GaussianMutation::new(chance, coeff).mutate(&mut rng, &mut child);
 
-        child.into_iter().collect()
+        child.iter().collect()
     }
 
     mod given_zero_chance {

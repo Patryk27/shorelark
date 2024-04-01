@@ -9,7 +9,7 @@ impl SelectionMethod for RouletteWheelSelection {
         I: Individual,
     {
         population
-            .choose_weighted(rng, |individual| individual.fitness())
+            .choose_weighted(rng, |individual| individual.fitness().max(0.00001))
             .expect("got an empty population")
     }
 }
@@ -23,7 +23,6 @@ mod test {
 
     #[test]
     fn test() {
-        let method = RouletteWheelSelection::default();
         let mut rng = ChaCha8Rng::from_seed(Default::default());
 
         let population = vec![
@@ -34,7 +33,7 @@ mod test {
         ];
 
         let actual_histogram = (0..1000)
-            .map(|_| method.select(&mut rng, &population))
+            .map(|_| RouletteWheelSelection.select(&mut rng, &population))
             .fold(BTreeMap::default(), |mut histogram, individual| {
                 *histogram.entry(individual.fitness() as i32).or_default() += 1;
                 histogram

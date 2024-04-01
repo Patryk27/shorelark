@@ -2,7 +2,7 @@
 name = "lib-simulation-wasm"
 version = "0.0.0"
 authors = ["Patryk Wychowaniec <pwychowaniec@pm.me>"]
-edition = "2018"
+edition = "2021"
 
 [lib]
 crate-type = ["cdylib"]

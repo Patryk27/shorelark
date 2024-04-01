@@ -1,9 +1,10 @@
-pub use self::{animal::*, food::*, world::*};
-
 mod animal;
 mod food;
 mod world;
 
+pub use self::animal::*;
+pub use self::food::*;
+pub use self::world::*;
 use lib_simulation as sim;
 use rand::prelude::*;
 use serde::Serialize;

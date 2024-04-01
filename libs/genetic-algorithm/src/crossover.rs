@@ -1,8 +1,7 @@
-pub use self::uniform::*;
-
-use crate::*;
-
 mod uniform;
+
+pub use self::uniform::*;
+use crate::*;
 
 pub trait CrossoverMethod {
     fn crossover(

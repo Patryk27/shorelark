@@ -1,5 +1,3 @@
-pub use self::{animal::*, brain::*, config::*, eye::*, food::*, statistics::*, world::*};
-
 mod animal;
 mod animal_individual;
 mod brain;
@@ -9,13 +7,18 @@ mod food;
 mod statistics;
 mod world;
 
+pub use self::animal::*;
 use self::animal_individual::*;
-use lib_genetic_algorithm as ga;
-use lib_neural_network as nn;
-use nalgebra as na;
+pub use self::brain::*;
+pub use self::config::*;
+pub use self::eye::*;
+pub use self::food::*;
+pub use self::statistics::*;
+pub use self::world::*;
 use rand::{Rng, RngCore};
 use serde::{Deserialize, Serialize};
 use std::f32::consts::*;
+use {lib_genetic_algorithm as ga, lib_neural_network as nn, nalgebra as na};
 
 pub struct Simulation {
     config: Config,
@@ -122,8 +125,8 @@ impl Simulation {
         }
 
         let ga = ga::GeneticAlgorithm::new(
-            ga::RouletteWheelSelection::default(),
-            ga::UniformCrossover::default(),
+            ga::RouletteWheelSelection,
+            ga::UniformCrossover,
             ga::GaussianMutation::new(self.config.ga_mut_chance, self.config.ga_mut_coeff),
         );
 

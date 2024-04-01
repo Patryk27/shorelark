@@ -2,7 +2,7 @@
 name = "lib-genetic-algorithm"
 version = "0.0.0"
 authors = ["Patryk Wychowaniec <pwychowaniec@pm.me>"]
-edition = "2018"
+edition = "2021"
 
 [dependencies]
 rand = "0.8"

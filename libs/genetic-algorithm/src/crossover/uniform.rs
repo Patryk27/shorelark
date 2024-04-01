@@ -17,7 +17,7 @@ impl CrossoverMethod for UniformCrossover {
 
         parent_a
             .zip(parent_b)
-            .map(|(&a, &b)| if rng.gen_bool(0.5) { a } else { b })
+            .map(|(a, b)| if rng.gen_bool(0.5) { a } else { b })
             .collect()
     }
 }
@@ -28,20 +28,27 @@ mod tests {
     use rand::SeedableRng;
     use rand_chacha::ChaCha8Rng;
 
-    #[allow(clippy::float_cmp)] // it's safe, because we're comparing hard-coded floats only
     #[test]
     fn test() {
         let mut rng = ChaCha8Rng::from_seed(Default::default());
         let parent_a: Chromosome = (1..=100).map(|n| n as f32).collect();
         let parent_b: Chromosome = (1..=100).map(|n| -n as f32).collect();
 
-        let child = UniformCrossover::default().crossover(&mut rng, &parent_a, &parent_b);
+        let child = UniformCrossover.crossover(&mut rng, &parent_a, &parent_b);
 
         // Number of genes different between `child` and `parent_a`
-        let diff_a = child.iter().zip(parent_a).filter(|(c, p)| *c != p).count();
+        let diff_a = child
+            .iter()
+            .zip(parent_a.iter())
+            .filter(|(c, p)| c != p)
+            .count();
 
         // Number of genes different between `child` and `parent_b`
-        let diff_b = child.iter().zip(parent_b).filter(|(c, p)| *c != p).count();
+        let diff_b = child
+            .iter()
+            .zip(parent_b.iter())
+            .filter(|(c, p)| c != p)
+            .count();
 
         // Roughly looks like 50%, which proves that chance for picking either
         // gene is 50%

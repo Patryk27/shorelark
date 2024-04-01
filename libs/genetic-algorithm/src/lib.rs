@@ -1,18 +1,18 @@
-#![feature(impl_trait_in_assoc_type)]
-
-pub use self::{
-    chromosome::*, crossover::*, individual::*, mutation::*, selection::*, statistics::*,
-};
-
-use rand::seq::SliceRandom;
-use rand::{Rng, RngCore};
-
 mod chromosome;
 mod crossover;
 mod individual;
 mod mutation;
 mod selection;
 mod statistics;
+
+pub use self::chromosome::*;
+pub use self::crossover::*;
+pub use self::individual::*;
+pub use self::mutation::*;
+pub use self::selection::*;
+pub use self::statistics::*;
+use rand::seq::SliceRandom;
+use rand::{Rng, RngCore};
 
 pub struct GeneticAlgorithm<S> {
     selection_method: S,
@@ -66,9 +66,7 @@ mod tests {
     use rand_chacha::ChaCha8Rng;
 
     fn individual(genes: &[f32]) -> TestIndividual {
-        let chromosome = genes.iter().cloned().collect();
-
-        TestIndividual::create(chromosome)
+        TestIndividual::create(genes.iter().cloned().collect())
     }
 
     #[allow(clippy::excessive_precision)] // formatting the numbers differently would make the test less readable
@@ -77,8 +75,8 @@ mod tests {
         let mut rng = ChaCha8Rng::from_seed(Default::default());
 
         let ga = GeneticAlgorithm::new(
-            RouletteWheelSelection::default(),
-            UniformCrossover::default(),
+            RouletteWheelSelection,
+            UniformCrossover,
             GaussianMutation::new(0.5, 0.5),
         );
 

@@ -39,7 +39,7 @@ terminal.println(" \\___ \\| '_ \\ / _ \\| '__/ _ \\ |/ _` | '__| |/ /");
 terminal.println(" ____) | | | | (_) | | |  __/ | (_| | |  |   < ");
 terminal.println("|_____/|_| |_|\\___/|_|  \\___|_|\\__,_|_|  |_|\\_\\");
 terminal.println("");
-terminal.println("Simulation of evolution, powered by neural network, genetic algorithm & high-school math.");
+terminal.println("Simulation of evolution, powered by neural network, genetic algorithm and high school math.");
 terminal.println("");
 terminal.println("https://pwy.io/en/posts/learning-to-fly-pt1/");
 terminal.println("");

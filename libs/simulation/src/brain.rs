@@ -15,7 +15,7 @@ impl Brain {
     }
 
     pub(crate) fn from_chromosome(config: &Config, chromosome: ga::Chromosome) -> Self {
-        let nn = nn::Network::from_weights(&Self::topology(config), chromosome);
+        let nn = nn::Network::from_weights(&Self::topology(config), chromosome.iter());
 
         Self::new(config, nn)
     }
