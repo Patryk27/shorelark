@@ -8,9 +8,9 @@ high school math:
 Feeling curious? I've described the implementation _ab ovo_ on my blog:
 [Learning to Fly](https://pwy.io/en/posts/learning-to-fly-pt1).
 
-# Building
+## Building
 
-## Using Cargo and npm
+### Using Cargo and npm
 
 Requires `cargo`, `npm` and `wasm-pack` (0.11.0):
 
@@ -33,7 +33,7 @@ $ npm run start
 # Now simply open `http://localhost:8080` in your web browser :-)
 ```
 
-## Using Nix
+### Using Nix
 
 ```bash
 # Clone the repository
@@ -49,12 +49,12 @@ $ nix run nixpkgs#php -- -S localhost:8080 -t result
 # Now simply open `http://localhost:8080` in your web browser :-)
 ```
 
-# Usage
+## Usage
 
 Shorelark contains an in-game introduction - just read what the terminal on the
 left side says and have fun!
 
-# License
+## License
 
 Copyright (c) 2020 Patryk Wychowaniec <pwychowaniec@pm.me>.    
 Licensed under the MIT license.
