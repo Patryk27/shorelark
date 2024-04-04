@@ -23,13 +23,7 @@
     };
 
     nixpkgs = {
-      url = "github:nixos/nixpkgs";
-
-      inputs = {
-        nixpkgs = {
-          follows = "nixpkgs";
-        };
-      };
+      url = "github:nixos/nixpkgs/nixos-unstable";
     };
 
     rust-overlay = {
@@ -44,12 +38,6 @@
 
     utils = {
       url = "github:numtide/flake-utils";
-
-      inputs = {
-        nixpkgs = {
-          follows = "nixpkgs";
-        };
-      };
     };
   };
 
