@@ -1,6 +1,7 @@
 use crate::*;
 
-#[derive(Clone, Debug, Serialize)]
+#[wasm_bindgen]
+#[derive(Clone, Debug)]
 pub struct Food {
     pub x: f32,
     pub y: f32,

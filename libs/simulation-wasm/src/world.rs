@@ -1,8 +1,12 @@
 use crate::*;
 
-#[derive(Clone, Debug, Serialize)]
+#[wasm_bindgen]
+#[derive(Clone, Debug)]
 pub struct World {
+    #[wasm_bindgen(getter_with_clone)]
     pub animals: Vec<Animal>,
+
+    #[wasm_bindgen(getter_with_clone)]
     pub foods: Vec<Food>,
 }
 

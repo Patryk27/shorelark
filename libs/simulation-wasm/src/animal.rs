@@ -1,10 +1,13 @@
 use crate::*;
 
-#[derive(Clone, Debug, Serialize)]
+#[wasm_bindgen]
+#[derive(Clone, Debug)]
 pub struct Animal {
     pub x: f32,
     pub y: f32,
     pub rotation: f32,
+
+    #[wasm_bindgen(getter_with_clone)]
     pub vision: Vec<f32>,
 }
 

@@ -6,7 +6,7 @@ high school math:
 ![screenshot](./readme/screenshot.png)
 
 Feeling curious? I've described the implementation _ab ovo_ on my blog:
-[Learning to Fly](https://pwy.io/en/posts/learning-to-fly-pt1).
+[Learning to Fly](https://pwy.io/posts/learning-to-fly-pt1).
 
 ## Building
 
