@@ -4,22 +4,52 @@
   inputs = {
     naersk = {
       url = "github:nix-community/naersk";
+
+      inputs = {
+        nixpkgs = {
+          follows = "nixpkgs";
+        };
+      };
     };
 
     napalm = {
       url = "github:nix-community/napalm";
+
+      inputs = {
+        nixpkgs = {
+          follows = "nixpkgs";
+        };
+      };
     };
 
     nixpkgs = {
       url = "github:nixos/nixpkgs";
+
+      inputs = {
+        nixpkgs = {
+          follows = "nixpkgs";
+        };
+      };
     };
 
     rust-overlay = {
       url = "github:oxalica/rust-overlay";
+
+      inputs = {
+        nixpkgs = {
+          follows = "nixpkgs";
+        };
+      };
     };
 
     utils = {
       url = "github:numtide/flake-utils";
+
+      inputs = {
+        nixpkgs = {
+          follows = "nixpkgs";
+        };
+      };
     };
   };
 
